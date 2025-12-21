@@ -123,3 +123,64 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Print styles per PRD FR-4.3 */
+@media print {
+  /* Hide buttons and interactive elements */
+  button,
+  [role="button"],
+  a[href^="#"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Avoid page breaks inside rows/tables */
+  tr,
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* White background for print */
+  body,
+  html {
+    background: white !important;
+  }
+
+  /* Ensure readable font sizes */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+
+  h3 {
+    font-size: 14pt;
+  }
+
+  /* Remove dark mode styles for print */
+  .dark {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 285.823);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0.005 285.823);
+  }
+
+  /* Ensure text is black for readability */
+  * {
+    color: black !important;
+  }
+
+  /* Remove shadows and borders that don't print well */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
