@@ -68,6 +68,15 @@ export default function CreateTeamPage() {
   const [firmName, setFirmName] = useState("");
   const [participantEmailsRaw, setParticipantEmailsRaw] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Success state
+  const [successData, setSuccessData] = useState<{
+    leaderAssessmentUrl: string;
+    participantCount: number;
+  } | null>(null);
+  
+  // Error state
+  const [error, setError] = useState<string | null>(null);
 
   // Parse and validate emails
   const parsedEmails = useMemo(
@@ -128,22 +137,35 @@ export default function CreateTeamPage() {
       if (!validationState.canSubmit || isSubmitting) return;
 
       setIsSubmitting(true);
+      setError(null);
 
       try {
-        // TODO: Submit to API
-        console.log("Submitting:", {
-          leaderName: leaderName.trim(),
-          leaderEmail: leaderEmail.toLowerCase().trim(),
-          firmName: firmName.trim(),
-          participantEmails: validationState.uniqueValidEmails.map((e) =>
-            e.email.toLowerCase().trim()
-          ),
+        const response = await fetch('/api/teams', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            leaderName: leaderName.trim(),
+            leaderEmail: leaderEmail.toLowerCase().trim(),
+            firmName: firmName.trim(),
+            participantEmails: validationState.uniqueValidEmails.map((e) =>
+              e.email.toLowerCase().trim()
+            ),
+          }),
         });
 
-        // Placeholder for success handling
-        alert("Form submitted! (API integration pending)");
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          setSuccessData({
+            leaderAssessmentUrl: result.data.leaderAssessmentUrl,
+            participantCount: result.data.participantCount,
+          });
+        } else {
+          setError(result.error?.message || 'Failed to create assessment. Please try again.');
+        }
       } catch (error) {
         console.error("Submit error:", error);
+        setError('An unexpected error occurred. Please try again.');
       } finally {
         setIsSubmitting(false);
       }
@@ -153,6 +175,50 @@ export default function CreateTeamPage() {
 
   // Count display for participant emails
   const participantCount = validationState.uniqueValidEmails.length;
+
+  // Show success card if assessment was created
+  if (successData) {
+    return (
+      <div className="min-h-screen bg-slate-50 py-12 px-4">
+        <div className="mx-auto max-w-2xl">
+          {/* Hero Section */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold italic text-rose-600 md:text-4xl">
+              Operating Strengths Assessment
+            </h1>
+          </div>
+
+          {/* Success Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">
+                ✅ Assessment Created!
+              </CardTitle>
+              <CardDescription>
+                You've invited {successData.participantCount} team member
+                {successData.participantCount !== 1 ? 's' : ''}.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-slate-600">
+                📧 Check your email for your dashboard link.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                asChild 
+                className="w-full bg-rose-600 hover:bg-rose-700"
+              >
+                <a href={successData.leaderAssessmentUrl}>
+                  Start Your Assessment
+                </a>
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
@@ -305,14 +371,24 @@ export default function CreateTeamPage() {
               )}
             </CardContent>
 
-            <CardFooter className="flex justify-end border-t pt-6">
-              <Button
-                type="submit"
-                disabled={!validationState.canSubmit || isSubmitting}
-                className="bg-rose-600 hover:bg-rose-700"
-              >
-                {isSubmitting ? "Creating..." : "Send Invites & Start Assessment"}
-              </Button>
+            <CardFooter className="flex flex-col gap-4 border-t pt-6">
+              {/* Error Message */}
+              {error && (
+                <div className="w-full rounded-md bg-red-50 border border-red-200 px-4 py-3">
+                  <p className="text-sm text-red-600">{error}</p>
+                </div>
+              )}
+              
+              {/* Submit Button */}
+              <div className="flex w-full justify-end">
+                <Button
+                  type="submit"
+                  disabled={!validationState.canSubmit || isSubmitting}
+                  className="bg-rose-600 hover:bg-rose-700"
+                >
+                  {isSubmitting ? "Creating..." : "Send Invites & Start Assessment"}
+                </Button>
+              </div>
             </CardFooter>
           </form>
         </Card>
