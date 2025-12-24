@@ -45,18 +45,22 @@ async function getAssessmentData(token: string) {
   }
 
   // Type assertion since Supabase doesn't infer nested relations perfectly
-  const team = Array.isArray(member.team) ? member.team[0] : member.team;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const memberData = member as any;
+  const team = Array.isArray(memberData.team)
+    ? memberData.team[0]
+    : memberData.team;
 
   return {
-    memberId: member.id,
-    displayName: member.display_name,
-    isLeader: member.is_leader ?? false,
-    completed: member.completed ?? false,
-    completedAt: member.completed_at,
-    alignmentScore: member.alignment_score,
-    executionScore: member.execution_score,
-    accountabilityScore: member.accountability_score,
-    firmName: team?.firm_name ?? "Unknown Firm",
+    memberId: memberData.id as string,
+    displayName: memberData.display_name as string | null,
+    isLeader: (memberData.is_leader ?? false) as boolean,
+    completed: (memberData.completed ?? false) as boolean,
+    completedAt: memberData.completed_at as string | null,
+    alignmentScore: memberData.alignment_score as number | null,
+    executionScore: memberData.execution_score as number | null,
+    accountabilityScore: memberData.accountability_score as number | null,
+    firmName: (team?.firm_name ?? "Unknown Firm") as string,
   };
 }
 

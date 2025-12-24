@@ -101,13 +101,15 @@ export async function POST(
     const supabase = createAdminClient();
 
     // Validate token + completion state
-    const { data: member, error: memberError } = await supabase
+    const result = await supabase
       .from("team_members")
       .select("id, completed")
       .eq("assessment_token_hash", tokenHash)
-      .single();
+      .maybeSingle();
 
-    if (memberError || !member) {
+    const memberRow = result.data as { id: string; completed: boolean } | null;
+
+    if (result.error || !memberRow) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -121,7 +123,11 @@ export async function POST(
       );
     }
 
-    if (member.completed) {
+    // Extract values
+    const memberId = memberRow.id;
+    const isCompleted = memberRow.completed;
+
+    if (isCompleted) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -136,10 +142,11 @@ export async function POST(
     }
 
     // Update display name
-    const { error: updateError } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: updateError } = await (supabase as any)
       .from("team_members")
       .update({ display_name: displayName })
-      .eq("id", member.id);
+      .eq("id", memberId);
 
     if (updateError) {
       console.error("Name update error:", updateError);

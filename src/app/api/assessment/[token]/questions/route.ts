@@ -76,7 +76,7 @@ export async function GET(
     const supabase = createAdminClient();
 
     // 1. Validate token and get member info + team's question version
-    const { data: member, error: memberError } = await supabase
+    const memberResult = await supabase
       .from("team_members")
       .select(
         `
@@ -91,7 +91,16 @@ export async function GET(
       .eq("assessment_token_hash", tokenHash)
       .single();
 
-    if (memberError || !member) {
+    // Type assertion to work around Supabase inference issues
+    interface MemberWithTeam {
+      id: string;
+      display_name: string | null;
+      completed: boolean;
+      team: { question_version_id: number } | { question_version_id: number }[];
+    }
+    const member = memberResult.data as MemberWithTeam | null;
+
+    if (memberResult.error || !member) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -125,11 +134,20 @@ export async function GET(
     }
 
     // 2. Fetch questions for team's locked version (ordered by question_order)
-    const { data: questions, error: questionsError } = await supabase
+    interface QuestionRow {
+      question_order: number;
+      question_text: string;
+      dimension: string;
+    }
+
+    const questionsResult = await supabase
       .from("questions")
       .select("question_order, question_text, dimension")
       .eq("version_id", questionVersionId)
       .order("question_order", { ascending: true });
+
+    const questions = questionsResult.data as QuestionRow[] | null;
+    const questionsError = questionsResult.error;
 
     if (questionsError || !questions) {
       console.error("Questions fetch error:", questionsError);
