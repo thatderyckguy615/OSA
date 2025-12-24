@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Database } from './types';
+import { Database } from '@/lib/database.types';
 
 /**
  * Creates a server-side Supabase client using the service role key.

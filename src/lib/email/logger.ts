@@ -28,7 +28,8 @@ export async function logEmailEvent(
   try {
     const supabase = createAdminClient();
 
-    const { error } = await supabase.from("email_events").insert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from("email_events").insert({
       team_id: params.teamId ?? null,
       team_member_id: params.teamMemberId ?? null,
       email_type: params.emailType,
@@ -64,7 +65,8 @@ export async function canResendToMember(
   memberId: string
 ): Promise<CanResendResult> {
   try {
-    const supabase = createAdminClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const supabase = createAdminClient() as any;
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
 
     const { count, error: countError } = await supabase
@@ -96,8 +98,9 @@ export async function canResendToMember(
         return { allowed: false, retryAfterSeconds: 300 };
       }
 
-      if (data?.created_at) {
-        const sentAt = new Date(data.created_at).getTime();
+      const emailData = data as { created_at: string } | null;
+      if (emailData?.created_at) {
+        const sentAt = new Date(emailData.created_at).getTime();
         const retryAfterSeconds = Math.ceil(
           (sentAt + 5 * 60 * 1000 - Date.now()) / 1000
         );
