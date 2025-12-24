@@ -1,8 +1,19 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+/**
+ * Create Team / Assessment Setup Page
+ * (Homepage)
+ */
+import { useState, useMemo, useCallback, type FormEvent } from "react";
 import { z } from "zod";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -61,6 +72,8 @@ function parseEmails(input: string, leaderEmail: string): ParsedEmail[] {
   return results;
 }
 
+export const dynamic = "force-dynamic";
+
 export default function CreateTeamPage() {
   // Form state
   const [leaderName, setLeaderName] = useState("");
@@ -68,13 +81,13 @@ export default function CreateTeamPage() {
   const [firmName, setFirmName] = useState("");
   const [participantEmailsRaw, setParticipantEmailsRaw] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Success state
   const [successData, setSuccessData] = useState<{
     leaderAssessmentUrl: string;
     participantCount: number;
   } | null>(null);
-  
+
   // Error state
   const [error, setError] = useState<string | null>(null);
 
@@ -91,7 +104,9 @@ export default function CreateTeamPage() {
     const firmNameValid = firmName.trim().length >= 2;
 
     // Unique valid emails (not duplicates)
-    const uniqueValidEmails = parsedEmails.filter((e) => e.isValid && !e.isDuplicate);
+    const uniqueValidEmails = parsedEmails.filter(
+      (e) => e.isValid && !e.isDuplicate
+    );
     const invalidEmails = parsedEmails.filter((e) => !e.isValid);
     const duplicateEmails = parsedEmails.filter((e) => e.isDuplicate);
 
@@ -132,7 +147,7 @@ export default function CreateTeamPage() {
   }, [leaderName, leaderEmail, firmName, parsedEmails]);
 
   const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!validationState.canSubmit || isSubmitting) return;
 
@@ -140,9 +155,9 @@ export default function CreateTeamPage() {
       setError(null);
 
       try {
-        const response = await fetch('/api/teams', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const response = await fetch("/api/teams", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             leaderName: leaderName.trim(),
             leaderEmail: leaderEmail.toLowerCase().trim(),
@@ -161,11 +176,13 @@ export default function CreateTeamPage() {
             participantCount: result.data.participantCount,
           });
         } else {
-          setError(result.error?.message || 'Failed to create assessment. Please try again.');
+          setError(
+            result.error?.message || "Failed to create assessment. Please try again."
+          );
         }
-      } catch (error) {
-        console.error("Submit error:", error);
-        setError('An unexpected error occurred. Please try again.');
+      } catch (err) {
+        console.error("Submit error:", err);
+        setError("An unexpected error occurred. Please try again.");
       } finally {
         setIsSubmitting(false);
       }
@@ -183,7 +200,7 @@ export default function CreateTeamPage() {
         <div className="mx-auto max-w-2xl">
           {/* Hero Section */}
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold italic text-rose-600 md:text-4xl">
+            <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
               Operating Strengths Assessment
             </h1>
           </div>
@@ -195,8 +212,8 @@ export default function CreateTeamPage() {
                 ✅ Assessment Created!
               </CardTitle>
               <CardDescription>
-                You've invited {successData.participantCount} team member
-                {successData.participantCount !== 1 ? 's' : ''}.
+                You&apos;ve invited {successData.participantCount} team member
+                {successData.participantCount !== 1 ? "s" : ""}.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -205,16 +222,20 @@ export default function CreateTeamPage() {
               </p>
             </CardContent>
             <CardFooter>
-              <Button 
-                asChild 
-                className="w-full bg-rose-600 hover:bg-rose-700"
-              >
-                <a href={successData.leaderAssessmentUrl}>
-                  Start Your Assessment
-                </a>
+              <Button asChild className="w-full bg-rose-600 hover:bg-rose-700">
+                <a href={successData.leaderAssessmentUrl}>Start Your Assessment</a>
               </Button>
             </CardFooter>
           </Card>
+
+          {/* Logo at bottom */}
+          <div className="mt-12 text-center">
+            <img 
+              src="/addictive-leadership-logo.png" 
+              alt="Addictive Leadership" 
+              className="mx-auto max-w-[150px] w-full h-auto"
+            />
+          </div>
         </div>
       </div>
     );
@@ -225,12 +246,12 @@ export default function CreateTeamPage() {
       <div className="mx-auto max-w-2xl">
         {/* Hero Section */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold italic text-rose-600 md:text-4xl">
+          <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
             Operating Strengths Assessment
           </h1>
           <p className="mt-3 text-base text-slate-600 md:text-lg">
-            Measure your firm&apos;s strength across three critical dimensions: alignment,
-            execution, and accountability.
+            Measure your firm&apos;s strength across three critical dimensions:
+            alignment, execution, and accountability.
           </p>
         </div>
 
@@ -245,7 +266,7 @@ export default function CreateTeamPage() {
 
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-6">
-              {/* Leader Name and Email - side by side on larger screens */}
+              {/* Leader Name and Email */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="leader-name">Leader Name</Label>
@@ -371,14 +392,14 @@ export default function CreateTeamPage() {
               )}
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-4 border-t pt-6">
+            <CardFooter className="flex flex-col gap-4 pt-6">
               {/* Error Message */}
               {error && (
                 <div className="w-full rounded-md bg-red-50 border border-red-200 px-4 py-3">
                   <p className="text-sm text-red-600">{error}</p>
                 </div>
               )}
-              
+
               {/* Submit Button */}
               <div className="flex w-full justify-end">
                 <Button
@@ -392,6 +413,15 @@ export default function CreateTeamPage() {
             </CardFooter>
           </form>
         </Card>
+
+        {/* Logo at bottom */}
+        <div className="mt-12 text-center">
+          <img 
+            src="/addictive-leadership-logo.png" 
+            alt="Addictive Leadership" 
+            className="mx-auto max-w-[50px] w-full h-auto"
+          />
+        </div>
       </div>
     </div>
   );
