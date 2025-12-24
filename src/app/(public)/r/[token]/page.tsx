@@ -94,18 +94,11 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
     );
   }
 
-  // --- Logic for highlighting lowest values ---
+  // --- Logic for mobile highlighting of lowest subscale values ---
   const dims: Dimension[] = ["alignment", "execution", "accountability"];
   const subs: Subscale[] = ["pd", "cs", "ob"];
 
-  // Lowest dimension value
-  const minDimVal = Math.min(
-    scores.team_averages.alignment,
-    scores.team_averages.execution,
-    scores.team_averages.accountability
-  );
-
-  // Lowest subscale value
+  // Calculate lowest subscale value for mobile highlighting
   const allSubVals: number[] = [];
   for (const d of dims) for (const s of subs) allSubVals.push(scores.subscale_averages[d][s]);
   const minSubVal = Math.min(...allSubVals);
@@ -160,8 +153,8 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
         <div className="border-b border-gray-200 pb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 tracking-tight">{firmName}</h1>
-              <p className="text-xl text-rose-500 mt-2 font-medium">Operating Strengths Report</p>
+              <h1 className="text-3xl font-bold text-rose-600 md:text-4xl tracking-tight">Operating Strengths Report</h1>
+              <p className="text-xl text-slate-900 mt-2 font-medium">{firmName}</p>
               
               <div className="flex gap-12 mt-6">
                 <div>
@@ -192,7 +185,6 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
               {dims.map((d) => {
                 const val = scores.team_averages[d];
                 const pct = (val / 10) * 100;
-                const isLowest = val === minDimVal;
 
                 return (
                   <div key={d} className="flex items-center gap-6">
@@ -219,21 +211,15 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             </div>
 
             {/* Numeric Callouts */}
-            <div className="flex pl-[9.5rem] mt-6 justify-between px-4">
+            <div className="grid grid-cols-3 gap-2 pl-[9.5rem] mt-6 md:flex md:justify-between md:px-4">
               {dims.map((d) => {
                 const val = scores.team_averages[d];
-                const isLowest = val === minDimVal;
-                // Roughly align numbers under the bars based on width. 
-                // Since bars are full width, we can just distribute the numbers.
-                // Actually, the reference shows numbers centered under where the bars end? 
-                // Or just a summary row at the bottom. The prompt says "Bottom shows three numeric callouts aligned under the bars".
-                // I'll center them in a flex container relative to the content area.
                 return (
                   <div key={d} className="text-center flex-1">
-                    <div className={`text-3xl font-bold ${isLowest ? "text-rose-500" : "text-slate-800"}`}>
+                    <div className="text-2xl md:text-3xl font-bold text-slate-800">
                       {val.toFixed(1)}
                     </div>
-                    <div className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mt-1">
+                    <div className="text-[9px] md:text-[10px] font-bold text-slate-400 tracking-widest md:tracking-wider uppercase mt-1 leading-tight">
                       {labelDim(d)}
                     </div>
                   </div>
@@ -248,10 +234,11 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
           <div className="flex items-center gap-3 mb-6">
             <div className="w-1.5 h-6 bg-rose-500"></div>
             <h2 className="text-lg font-bold text-slate-900 tracking-wide uppercase">Subscale Breakdown</h2>
-            <span className="text-slate-400 text-sm font-medium ml-2">(Team Averages %)</span>
+            <span className="text-slate-400 text-sm font-medium ml-2">(Team Averages)</span>
           </div>
 
-          <div className="border border-slate-200 rounded-xl overflow-hidden">
+          {/* Desktop Table */}
+          <div className="hidden md:block print:block border border-slate-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
@@ -280,11 +267,12 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
                     </td>
                     {subs.map((s) => {
                       const val = scores.subscale_averages[d][s];
-                      const isLowest = val === minSubVal;
+                      // Convert 0-100 subscale score to 1.0-10.0 format
+                      const normalizedVal = (val / 100) * 9 + 1;
                       return (
                         <td key={s} className="py-5 px-6 text-center">
-                          <span className={`text-base font-medium ${isLowest ? "text-rose-500" : "text-slate-700"}`}>
-                            {val}%
+                          <span className="text-base font-medium text-slate-700">
+                            {normalizedVal.toFixed(1)}
                           </span>
                         </td>
                       );
@@ -293,6 +281,36 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden print:hidden space-y-4">
+            {dims.map((d) => (
+              <div key={d} className="border border-slate-200 rounded-xl p-4 bg-white">
+                <h3 className="font-bold text-slate-900 mb-4 text-lg">{labelDim(d)}</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {subs.map((s) => {
+                    const val = scores.subscale_averages[d][s];
+                    const normalizedVal = (val / 100) * 9 + 1;
+                    const isLowest = val === minSubVal;
+                    const subLabel = s === 'pd' ? 'Personal Discipline' : s === 'cs' ? 'Collective Systems' : 'Observable Behaviors';
+                    const subDesc = s === 'pd' ? 'Mindset' : s === 'cs' ? 'Environment' : 'Forensic Evidence';
+                    
+                    return (
+                      <div key={s} className="text-center">
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                          {subLabel}
+                        </div>
+                        <div className="text-[9px] text-slate-400 mb-2 capitalize">{subDesc}</div>
+                        <div className={`text-xl font-bold ${isLowest ? "text-rose-500" : "text-slate-700"}`}>
+                          {normalizedVal.toFixed(1)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -303,7 +321,8 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             <h2 className="text-lg font-bold text-slate-900 tracking-wide uppercase">Individual Results</h2>
           </div>
 
-          <div className="border border-slate-200 rounded-xl overflow-hidden">
+          {/* Desktop Table */}
+          <div className="hidden md:block print:block border border-slate-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
@@ -335,6 +354,50 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden print:hidden space-y-4">
+            {scores.individual_scores.length === 0 ? (
+              <div className="border border-slate-200 rounded-xl p-6 text-center text-slate-500 italic bg-white">
+                No completed responses found in this report snapshot.
+              </div>
+            ) : (
+              scores.individual_scores.map((m) => (
+                <div key={m.email} className="border border-slate-200 rounded-xl p-4 bg-white">
+                  <div className="mb-4">
+                    <div className="font-medium text-slate-900 text-base">{m.name}</div>
+                    <div className="text-sm text-slate-500">{m.email}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4 pt-3 border-t border-slate-200">
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Align
+                      </div>
+                      <div className="text-xl font-bold text-slate-700">
+                        {m.alignment.toFixed(1)}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Exec
+                      </div>
+                      <div className="text-xl font-bold text-slate-700">
+                        {m.execution.toFixed(1)}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Acct
+                      </div>
+                      <div className="text-xl font-bold text-slate-700">
+                        {m.accountability.toFixed(1)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </section>
 
         {/* WHAT TO DO CARD */}
@@ -345,7 +408,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             
             <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">WHAT TO DO WITH THESE RESULTS</h2>
             <p className="text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-              For help interpreting or improving these results, visit our interpretation guide.
+              For help interpreting or improving these results, visit the FREE guide:
             </p>
             
             <a
@@ -362,6 +425,15 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             </a>
           </div>
         </section>
+
+        {/* Logo at bottom */}
+        <div className="mt-12 pb-6 text-center">
+          <img 
+            src="/addictive-leadership-logo.png" 
+            alt="Addictive Leadership" 
+            className="mx-auto max-w-[150px] w-full h-auto"
+          />
+        </div>
       </main>
     </div>
   );

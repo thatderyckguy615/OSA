@@ -77,9 +77,9 @@ export function DashboardCard({
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <CardTitle className="text-2xl">Dashboard</CardTitle>
+            <CardTitle className="text-2xl">Operating Strengths Dashboard</CardTitle>
             <CardDescription className="mt-1">
-              Manage your assessment and view real-time progress.
+              Manage your assessments and view results.
             </CardDescription>
           </div>
           <Button

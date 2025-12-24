@@ -127,6 +127,15 @@ export function DashboardClient({
           leaderName={leaderName}
           firmName={firmName}
         />
+
+        {/* Logo at bottom */}
+        <div className="mt-12 pb-6 text-center">
+          <img 
+            src="/addictive-leadership-logo.png" 
+            alt="Addictive Leadership" 
+            className="mx-auto max-w-[150px] w-full h-auto"
+          />
+        </div>
       </main>
     </>
   );
