@@ -92,11 +92,19 @@ export async function POST(
     const adminTokenHash = hashToken(token);
 
     // 1) Validate admin token → team
-    const { data: team, error: teamError } = await supabase
+    const { data: team, error: teamError } = (await supabase
       .from("teams")
       .select("id, firm_name, leader_name, leader_email")
       .eq("admin_token_hash", adminTokenHash)
-      .single();
+      .single()) as {
+      data: {
+        id: string;
+        firm_name: string;
+        leader_name: string;
+        leader_email: string;
+      } | null;
+      error: any;
+    };
 
     if (teamError || !team) {
       return NextResponse.json<ApiResponse>(
@@ -111,7 +119,7 @@ export async function POST(
       );
     }
 
-    const teamId = team.id as string;
+    const teamId = team.id;
 
     // 2) Total member count
     const { count: totalCount, error: countError } = await supabase
@@ -233,17 +241,20 @@ export async function POST(
     const reportTokenHash = hashToken(reportRawToken);
 
     // 9) Upsert team_reports snapshot (overwrite previous)
-    const { error: upsertError } = await supabase.from("team_reports").upsert(
-      {
-        team_id: teamId,
-        report_token_hash: reportTokenHash,
-        completion_count: validCompleted.length,
-        total_count: totalCount ?? 0,
-        scores_json: scoresJson,
-        generated_at: generatedAt,
-      },
-      { onConflict: "team_id" }
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: upsertError } = await (supabase as any)
+      .from("team_reports")
+      .upsert(
+        {
+          team_id: teamId,
+          report_token_hash: reportTokenHash,
+          completion_count: validCompleted.length,
+          total_count: totalCount ?? 0,
+          scores_json: scoresJson,
+          generated_at: generatedAt,
+        },
+        { onConflict: "team_id" }
+      );
 
     if (upsertError) {
       console.error("Error upserting report:", upsertError);
