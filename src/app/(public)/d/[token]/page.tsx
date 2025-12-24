@@ -6,9 +6,7 @@
  */
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hashToken } from "@/lib/tokens";
-import { DashboardHeader } from "./components/DashboardHeader";
-import { DashboardCard } from "./components/DashboardCard";
-import { MemberLists } from "./components/MemberLists";
+import { DashboardClient } from "./components/DashboardClient";
 
 // ✅ Guaranteed: always dynamic, never cached (prevents stale token pages)
 export const dynamic = "force-dynamic";
@@ -104,43 +102,20 @@ export default async function DashboardPage({ params }: PageProps) {
 
   const { team, members } = data;
 
-  // Calculate stats
-  const completedMembers = members.filter((m) => m.completed);
-  const pendingMembers = members.filter((m) => !m.completed);
-  const totalMembers = members.length;
-  const completedCount = completedMembers.length;
-  const completionPercent =
-    totalMembers > 0 ? Math.round((completedCount / totalMembers) * 100) : 0;
-
   // Build dashboard URL for copying
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const dashboardUrl = `${appUrl}/d/${token}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <DashboardHeader firmName={team.firm_name} />
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-        {/* Dashboard Card */}
-        <DashboardCard
-          token={token}
-          dashboardUrl={dashboardUrl}
-          completedCount={completedCount}
-          totalMembers={totalMembers}
-          completionPercent={completionPercent}
-        />
-
-        {/* Member Lists */}
-        <MemberLists
-          token={token}
-          completedMembers={completedMembers}
-          pendingMembers={pendingMembers}
-          leaderName={team.leader_name}
-          firmName={team.firm_name}
-        />
-      </main>
+      <DashboardClient
+        token={token}
+        dashboardUrl={dashboardUrl}
+        teamId={team.id}
+        firmName={team.firm_name}
+        leaderName={team.leader_name}
+        initialMembers={members}
+      />
     </div>
   );
 }

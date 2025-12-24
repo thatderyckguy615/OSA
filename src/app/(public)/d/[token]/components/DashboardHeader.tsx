@@ -1,14 +1,15 @@
 "use client";
 
 /**
- * Dashboard Header with Firm Name
+ * Dashboard Header with Firm Name and Live Indicator
  */
 
 interface DashboardHeaderProps {
   firmName: string;
+  isConnected: boolean;
 }
 
-export function DashboardHeader({ firmName }: DashboardHeaderProps) {
+export function DashboardHeader({ firmName, isConnected }: DashboardHeaderProps) {
   // Get first letter for the firm initial
   const firmInitial = firmName.charAt(0).toUpperCase();
 
@@ -22,6 +23,22 @@ export function DashboardHeader({ firmName }: DashboardHeaderProps) {
               {firmInitial}
             </div>
             <h1 className="text-xl font-semibold text-gray-900">{firmName}</h1>
+          </div>
+
+          {/* Live indicator */}
+          <div
+            className={`
+              inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium
+              ${isConnected ? "bg-green-50 text-green-700" : "bg-gray-50 text-gray-500"}
+            `}
+          >
+            <span
+              className={`
+                w-2 h-2 rounded-full
+                ${isConnected ? "bg-green-500 animate-pulse" : "bg-gray-400"}
+              `}
+            />
+            {isConnected ? "Live" : "Offline"}
           </div>
         </div>
       </div>
