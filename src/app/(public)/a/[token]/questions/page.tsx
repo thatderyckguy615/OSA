@@ -211,71 +211,73 @@ export default function AssessmentQuestionsPage() {
       </header>
 
       {/* Question Content */}
-      <main className="flex-1 flex flex-col px-4 py-6 max-w-2xl mx-auto w-full">
+      <main className="flex-1 flex flex-col px-4 py-6 max-w-2xl mx-auto w-full overflow-y-auto">
         {/* Question Text */}
-        <div className="flex-1 flex items-start pt-4 md:pt-8">
+        <div className="flex-shrink-0 mb-8">
           <h2 className="text-xl md:text-2xl font-medium text-gray-900 leading-relaxed">
             {currentQuestion.text}
           </h2>
         </div>
 
-        {/* Scale Options */}
-        <div
-          className="space-y-3 py-6"
-          role="radiogroup"
-          aria-label={`Response options for question ${currentIndex + 1}`}
-        >
-          {SCALE_OPTIONS.map((option) => {
-            const isSelected = currentResponse === option.value;
+        {/* Scale Options - Centered Container */}
+        <div className="flex-1 flex items-center justify-center min-h-0">
+          <div
+            className="w-full max-w-md space-y-3"
+            role="radiogroup"
+            aria-label={`Response options for question ${currentIndex + 1}`}
+          >
+            {SCALE_OPTIONS.map((option) => {
+              const isSelected = currentResponse === option.value;
 
-            return (
-              <button
-                key={option.value}
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                onClick={() =>
-                  progress.setResponse(currentQuestion.id, option.value)
-                }
-                className={`
-                  w-full min-h-[48px] px-4 py-3 rounded-lg border-2 
-                  text-left transition-all duration-150
-                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-                  ${
-                    isSelected
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-300 bg-white hover:border-gray-400 active:bg-gray-50"
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() =>
+                    progress.setResponse(currentQuestion.id, option.value)
                   }
-                `}
-              >
-                <div className="flex items-center">
-                  {/* Radio Circle */}
-                  <div
-                    className={`
-                      w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center flex-shrink-0
-                      transition-colors duration-150
-                      ${isSelected ? "border-green-500 bg-green-500" : "border-gray-400"}
-                    `}
-                  >
-                    {isSelected && (
-                      <div className="w-2.5 h-2.5 rounded-full bg-white" />
-                    )}
+                  className={`
+                    w-full min-h-[48px] px-4 py-3 rounded-lg border-2 
+                    text-left transition-all duration-150
+                    focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+                    ${
+                      isSelected
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-300 bg-white hover:border-gray-400 active:bg-gray-50"
+                    }
+                  `}
+                >
+                  <div className="flex items-center">
+                    {/* Radio Circle */}
+                    <div
+                      className={`
+                        w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center flex-shrink-0
+                        transition-colors duration-150
+                        ${isSelected ? "border-green-500 bg-green-500" : "border-gray-400"}
+                      `}
+                    >
+                      {isSelected && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                      )}
+                    </div>
+                    {/* Label */}
+                    <span
+                      className={`text-base ${isSelected ? "font-medium text-gray-900" : "text-gray-700"}`}
+                    >
+                      {option.label}
+                    </span>
                   </div>
-                  {/* Label */}
-                  <span
-                    className={`text-base ${isSelected ? "font-medium text-gray-900" : "text-gray-700"}`}
-                  >
-                    {option.label}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Submit Error */}
         {submitError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <div className="flex-shrink-0 mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
             {submitError}
           </div>
         )}

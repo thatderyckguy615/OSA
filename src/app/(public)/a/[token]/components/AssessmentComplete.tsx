@@ -47,8 +47,8 @@ export function AssessmentComplete({
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Assessment Complete
+          <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
+            Assessment Complete!
           </h1>
           <p className="text-lg text-gray-600">{firmName}</p>
         </div>
@@ -64,9 +64,13 @@ export function AssessmentComplete({
           <CardContent className="space-y-6">
             {/* Scores */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Your Scores <span className="text-sm font-normal text-gray-500">(1.0 - 10.0 scale)</span>
-              </h3>
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-6 bg-rose-500"></div>
+                <h3 className="text-lg font-bold text-slate-900 tracking-wide uppercase">
+                  Your Scores
+                </h3>
+                <span className="text-slate-400 text-sm font-medium ml-2">(1.0 - 10.0 scale. Higher scores reflect strength.)</span>
+              </div>
 
               <div className="space-y-3">
                 <ScoreRow
@@ -82,10 +86,6 @@ export function AssessmentComplete({
                   score={formatScore(accountabilityScore)}
                 />
               </div>
-
-              <p className="text-sm text-gray-600 italic">
-                Higher scores reflect strength.
-              </p>
             </div>
 
             {/* Info box */}
