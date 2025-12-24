@@ -28,16 +28,13 @@ export function AssessmentIntro({ token, displayName, firmName }: AssessmentIntr
         <CardTitle className="text-2xl">Welcome, {displayName}</CardTitle>
         <CardDescription className="text-base">
           You're about to complete the Operating Strengths Assessment for{" "}
-          {firmName}.
+          {firmName}. This will measure your team&apos;s collective strength across three dimensions: Alignment, Execution, and Accountability.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Purpose */}
         <div className="space-y-2">
-          <p className="text-gray-700">
-            This will measure your team&apos;s strengths across several dimensions.
-          </p>
-          <p className="text-gray-700">⏱️ Answer 36 questions/prompts.</p>
+          <p className="text-base text-gray-900">⏱️ Answer 36 questions/prompts.</p>
         </div>
 
         {/* Privacy Statement - Exact PRD copy */}
@@ -46,10 +43,8 @@ export function AssessmentIntro({ token, displayName, firmName }: AssessmentIntr
             🔒 Your Privacy
           </h3>
           <p className="text-sm text-blue-800">
-            Your leader will see your <strong>overall dimension scores</strong>{" "}
-            (Alignment/Execution/Accountability) and team averages, but{" "}
-            <strong>will NOT see your answers to individual questions</strong>.
-            Answer honestly.
+            Your overall dimension scores and team averages will be visible to your leader, but NOT your answers to individual questions.
+            Please answer honestly.
           </p>
         </div>
 

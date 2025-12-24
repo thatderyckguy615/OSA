@@ -9,6 +9,7 @@
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -36,6 +37,7 @@ export function DashboardCard({
 }: DashboardCardProps) {
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [reportUrl, setReportUrl] = useState<string | null>(null);
 
   const canGenerateReport = completedCount >= 1;
 
@@ -43,12 +45,31 @@ export function DashboardCard({
     if (!canGenerateReport || isGenerating) return;
     setIsGenerating(true);
 
-    // TODO (Phase 7): Call generate report API and redirect/open report
-    // For now, just simulate and refresh
-    setTimeout(() => {
+    try {
+      const response = await fetch(`/api/dashboard/${token}/report`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        toast.error(data.error?.message || "Failed to generate report");
+        return;
+      }
+
+      // Success
+      setReportUrl(data.data.reportUrl);
+      toast.success("Report generated successfully!");
+      router.refresh(); // Refresh to update any server-side data
+    } catch (error) {
+      console.error("Error generating report:", error);
+      toast.error("Network error. Please try again.");
+    } finally {
       setIsGenerating(false);
-      router.refresh();
-    }, 1000);
+    }
   };
 
   return (
@@ -103,6 +124,24 @@ export function DashboardCard({
             />
           </div>
         </div>
+
+        {/* Report Actions (shown after generation) */}
+        {reportUrl && (
+          <div className="space-y-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-sm font-medium text-green-900">
+              ✓ Report ready
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() => window.open(reportUrl, "_blank")}
+                className="bg-rose-500 hover:bg-rose-600 text-white"
+              >
+                Open Report
+              </Button>
+              <CopyLinkButton url={reportUrl} label="Copy Report Link" />
+            </div>
+          </div>
+        )}
 
         {/* Primary Action */}
         <div className="flex flex-wrap gap-3">

@@ -213,13 +213,10 @@ export default function CreateTeamPage() {
               </CardTitle>
               <CardDescription>
                 You&apos;ve invited {successData.participantCount} team member
-                {successData.participantCount !== 1 ? "s" : ""}.
+                {successData.participantCount !== 1 ? "s" : ""}. Check your email for your dashboard link.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-slate-600">
-                📧 Check your email for your dashboard link.
-              </p>
             </CardContent>
             <CardFooter>
               <Button asChild className="w-full bg-rose-600 hover:bg-rose-700">
@@ -250,7 +247,7 @@ export default function CreateTeamPage() {
             Operating Strengths Assessment
           </h1>
           <p className="mt-3 text-base text-slate-600 md:text-lg">
-            Measure your firm&apos;s strength across three critical dimensions:
+            Measure your firm&apos;s strength across three critical dimensions:<br />
             alignment, execution, and accountability.
           </p>
         </div>
@@ -328,7 +325,7 @@ export default function CreateTeamPage() {
               {/* Parsed Email List */}
               {parsedEmails.length > 0 && (
                 <div className="space-y-2">
-                  <Label>Parsed Emails</Label>
+                  <Label>Verified Emails</Label>
                   <div className="max-h-48 overflow-y-auto rounded-md border border-slate-200 bg-slate-50 p-3">
                     <ul className="space-y-1">
                       {parsedEmails.map((parsed, idx) => (
@@ -368,7 +365,7 @@ export default function CreateTeamPage() {
                 <div className="space-y-1 text-sm">
                   {!validationState.allEmailsValid && (
                     <p className="text-red-600">
-                      ✗ {validationState.invalidEmails.length} invalid email
+                      {validationState.invalidEmails.length} invalid email
                       {validationState.invalidEmails.length !== 1 ? "s" : ""} — please fix or remove
                     </p>
                   )}
@@ -419,7 +416,7 @@ export default function CreateTeamPage() {
           <img 
             src="/addictive-leadership-logo.png" 
             alt="Addictive Leadership" 
-            className="mx-auto max-w-[50px] w-full h-auto"
+            className="mx-auto max-w-[150px] w-full h-auto"
           />
         </div>
       </div>
