@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AddMemberForm } from "./AddMemberForm";
 
 interface Member {
   id: string;
@@ -98,9 +99,12 @@ export function MemberLists({
               </svg>
               <CardTitle className="text-lg">Pending</CardTitle>
             </div>
-            <Badge variant="secondary" className="text-sm">
-              {pendingMembers.length}
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-sm">
+                {pendingMembers.length}
+              </Badge>
+              <AddMemberForm token={token} />
+            </div>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
@@ -168,40 +172,83 @@ function PendingMemberRow({
   firmName: string;
 }) {
   const [isResending, setIsResending] = useState(false);
-  const [resendStatus, setResendStatus] = useState<"idle" | "sent" | "error">("idle");
+  const [resendStatus, setResendStatus] = useState<"idle" | "sent" | "error" | "throttled">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleResend = async () => {
     if (isResending) return;
     setIsResending(true);
     setResendStatus("idle");
+    setErrorMessage(null);
 
     try {
-      // TODO: Implement resend API
-      // For now, simulate the action
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setResendStatus("sent");
-      setTimeout(() => setResendStatus("idle"), 2000);
-    } catch {
+      const response = await fetch(
+        `/api/dashboard/${token}/members/${member.id}/resend`,
+        { method: "POST" }
+      );
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setResendStatus("sent");
+        setTimeout(() => setResendStatus("idle"), 3000);
+      } else if (response.status === 429) {
+        // Throttled
+        setResendStatus("throttled");
+        const retrySeconds = data.data?.retryAfterSeconds || 300;
+        setErrorMessage(`Please wait ${Math.ceil(retrySeconds / 60)} minutes`);
+        setTimeout(() => {
+          setResendStatus("idle");
+          setErrorMessage(null);
+        }, 5000);
+      } else {
+        setResendStatus("error");
+        setErrorMessage(data.error?.message || "Failed to resend");
+        setTimeout(() => {
+          setResendStatus("idle");
+          setErrorMessage(null);
+        }, 3000);
+      }
+    } catch (err) {
+      console.error("Resend error:", err);
       setResendStatus("error");
+      setErrorMessage("Network error");
+      setTimeout(() => {
+        setResendStatus("idle");
+        setErrorMessage(null);
+      }, 3000);
     } finally {
       setIsResending(false);
     }
   };
 
+  const getButtonText = () => {
+    if (resendStatus === "sent") return "Sent ✓";
+    if (resendStatus === "throttled") return "Too Soon";
+    if (resendStatus === "error") return "Failed";
+    if (isResending) return "Sending...";
+    return "Resend";
+  };
+
   return (
-    <div className="flex items-center justify-between py-3">
-      <div className="min-w-0 flex-1">
-        <p className="font-medium text-gray-900 truncate">{member.email}</p>
+    <div className="py-3">
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 flex-1">
+          <p className="font-medium text-gray-900 truncate">{member.email}</p>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleResend}
+          disabled={isResending || resendStatus === "sent" || resendStatus === "throttled"}
+          className="ml-4 text-gray-600 hover:text-gray-900"
+        >
+          {getButtonText()}
+        </Button>
       </div>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handleResend}
-        disabled={isResending || resendStatus === "sent"}
-        className="ml-4 text-gray-600 hover:text-gray-900"
-      >
-        {resendStatus === "sent" ? "Sent ✓" : isResending ? "Sending..." : "Resend"}
-      </Button>
+      {errorMessage && (
+        <p className="text-xs text-red-600 mt-1">{errorMessage}</p>
+      )}
     </div>
   );
 }

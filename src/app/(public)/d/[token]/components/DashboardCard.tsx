@@ -2,11 +2,20 @@
 
 /**
  * Main Dashboard Card
- * Contains Generate Report button, progress, and action buttons
+ * Contains Generate Report button, progress, and primary dashboard actions
+ *
+ * Per PRD: Add Member is handled in the Pending section (contextual),
+ * so we intentionally do NOT duplicate it here to avoid confusion.
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CopyLinkButton } from "./CopyLinkButton";
 
@@ -34,7 +43,7 @@ export function DashboardCard({
     if (!canGenerateReport || isGenerating) return;
     setIsGenerating(true);
 
-    // TODO: Call generate report API and redirect to report page
+    // TODO (Phase 7): Call generate report API and redirect/open report
     // For now, just simulate and refresh
     setTimeout(() => {
       setIsGenerating(false);
@@ -95,28 +104,11 @@ export function DashboardCard({
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Primary Action */}
         <div className="flex flex-wrap gap-3">
           <CopyLinkButton url={dashboardUrl} label="Copy Dashboard Link" />
-          <Button variant="outline" className="gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-4 h-4"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add Member
-          </Button>
         </div>
       </CardContent>
     </Card>
   );
 }
-

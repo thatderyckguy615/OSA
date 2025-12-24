@@ -3,8 +3,13 @@
 /**
  * Dashboard Client Component
  * Handles real-time updates and client-side state
+ *
+ * Fixes:
+ * - Ensure INSERT/UPDATE payloads merge safely into existing member rows
+ * - Keep list ordering consistent after realtime updates (completed first, then name/email)
+ * - Avoid losing existing fields if realtime payload is partial
  */
-import { useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useRealtime } from "@/hooks/useRealtime";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardCard } from "./DashboardCard";
@@ -32,6 +37,16 @@ interface DashboardClientProps {
   initialMembers: Member[];
 }
 
+function sortMembers(a: Member, b: Member) {
+  // Completed members first
+  if (a.completed !== b.completed) return a.completed ? -1 : 1;
+
+  // Then by display name (fallback to email)
+  const aKey = (a.display_name || a.email || "").toLowerCase();
+  const bKey = (b.display_name || b.email || "").toLowerCase();
+  return aKey.localeCompare(bKey);
+}
+
 export function DashboardClient({
   token,
   dashboardUrl,
@@ -40,22 +55,25 @@ export function DashboardClient({
   leaderName,
   initialMembers,
 }: DashboardClientProps) {
-  const [members, setMembers] = useState<Member[]>(initialMembers);
+  const [members, setMembers] = useState<Member[]>(
+    [...initialMembers].sort(sortMembers)
+  );
 
-  // Handle real-time member updates
-  const handleMemberUpdate = useCallback((updatedMember: Member) => {
+  // Handle real-time member updates (INSERT/UPDATE)
+  const handleMemberUpdate = useCallback((incoming: Member) => {
     setMembers((prev) => {
-      const existingIndex = prev.findIndex((m) => m.id === updatedMember.id);
-      
-      if (existingIndex >= 0) {
-        // Update existing member
-        const newMembers = [...prev];
-        newMembers[existingIndex] = updatedMember;
-        return newMembers;
-      } else {
-        // Add new member
-        return [...prev, updatedMember];
+      const idx = prev.findIndex((m) => m.id === incoming.id);
+
+      if (idx >= 0) {
+        // Merge to avoid losing any fields if realtime payload is partial
+        const merged: Member = { ...prev[idx], ...incoming };
+        const next = [...prev];
+        next[idx] = merged;
+        return next.sort(sortMembers);
       }
+
+      // New member added (INSERT)
+      return [...prev, incoming].sort(sortMembers);
     });
   }, []);
 
@@ -66,17 +84,27 @@ export function DashboardClient({
     onMemberUpdate: handleMemberUpdate,
   });
 
-  // Calculate stats
-  const completedMembers = members.filter((m) => m.completed);
-  const pendingMembers = members.filter((m) => !m.completed);
-  const totalMembers = members.length;
-  const completedCount = completedMembers.length;
-  const completionPercent =
-    totalMembers > 0 ? Math.round((completedCount / totalMembers) * 100) : 0;
+  // Derived stats (memoized)
+  const { completedMembers, pendingMembers, totalMembers, completedCount, completionPercent } =
+    useMemo(() => {
+      const completed = members.filter((m) => m.completed);
+      const pending = members.filter((m) => !m.completed);
+      const total = members.length;
+      const completedCt = completed.length;
+      const percent = total > 0 ? Math.round((completedCt / total) * 100) : 0;
+
+      return {
+        completedMembers: completed,
+        pendingMembers: pending,
+        totalMembers: total,
+        completedCount: completedCt,
+        completionPercent: percent,
+      };
+    }, [members]);
 
   return (
     <>
-      {/* Header with Live indicator */}
+      {/* Header */}
       <DashboardHeader firmName={firmName} isConnected={isConnected} />
 
       {/* Disconnect Banner */}
@@ -84,7 +112,6 @@ export function DashboardClient({
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-        {/* Dashboard Card */}
         <DashboardCard
           token={token}
           dashboardUrl={dashboardUrl}
@@ -93,7 +120,6 @@ export function DashboardClient({
           completionPercent={completionPercent}
         />
 
-        {/* Member Lists */}
         <MemberLists
           token={token}
           completedMembers={completedMembers}
@@ -105,4 +131,3 @@ export function DashboardClient({
     </>
   );
 }
-
