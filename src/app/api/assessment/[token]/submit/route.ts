@@ -234,7 +234,8 @@ export async function POST(
 
     // 8) Call submit_assessment RPC (atomic transaction)
     // IMPORTANT: pass validated.responses so keys are exactly "1".."36"
-    const { error: rpcError } = await supabase.rpc("submit_assessment", {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: rpcError } = await (supabase as any).rpc("submit_assessment", {
       p_member_id: member.id,
       p_responses: validated.responses,
       p_alignment_score: scores.alignment.strength,

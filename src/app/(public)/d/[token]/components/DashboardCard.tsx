@@ -133,7 +133,13 @@ export function DashboardCard({
             </p>
             <div className="flex flex-wrap gap-2">
               <Button
-                onClick={() => window.open(reportUrl, "_blank")}
+                onClick={() => {
+                  // Store dashboard URL in sessionStorage before opening report
+                  if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('osa_dashboard_url', dashboardUrl);
+                  }
+                  window.open(reportUrl, "_blank");
+                }}
                 className="bg-rose-500 hover:bg-rose-600 text-white"
               >
                 Open Report

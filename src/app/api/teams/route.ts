@@ -55,7 +55,8 @@ async function checkRateLimit(
   if (!clientIp) return { allowed: true };
 
   try {
-    const { data, error } = await supabase.rpc("check_team_creation_rate_limit", {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any).rpc("check_team_creation_rate_limit", {
       p_creator_ip: clientIp,
     });
 
@@ -135,13 +136,16 @@ export async function POST(request: NextRequest) {
     }
 
     // 5) Get active question version (your table uses id/name/is_active/created_at)
-    const { data: activeVersion, error: versionError } = await supabase
+    const versionResult = await supabase
       .from("question_versions")
       .select("id")
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
+
+    const activeVersion = versionResult.data as { id: number } | null;
+    const versionError = versionResult.error;
 
     if (versionError || !activeVersion?.id) {
       console.error("No active question version found:", versionError);
@@ -200,7 +204,8 @@ export async function POST(request: NextRequest) {
     const adminTokenHash = hashToken(adminRaw);
 
     // 8) Insert team
-    const { error: teamError } = await supabase.from("teams").insert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: teamError } = await (supabase as any).from("teams").insert({
       id: teamId,
       leader_name: validated.leaderName,
       leader_email: validated.leaderEmail,
@@ -230,7 +235,8 @@ export async function POST(request: NextRequest) {
     const leaderAssessmentRaw = deriveRawToken("assessment", leaderMemberId);
     const leaderAssessmentHash = hashToken(leaderAssessmentRaw);
 
-    const { error: leaderError } = await supabase.from("team_members").insert({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: leaderError } = await (supabase as any).from("team_members").insert({
       id: leaderMemberId,
       team_id: teamId,
       email: validated.leaderEmail,
@@ -266,7 +272,8 @@ export async function POST(request: NextRequest) {
       const assessmentRaw = deriveRawToken("assessment", memberId);
       const assessmentHash = hashToken(assessmentRaw);
 
-      const { error: memberError } = await supabase.from("team_members").insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: memberError } = await (supabase as any).from("team_members").insert({
         id: memberId,
         team_id: teamId,
         email,
