@@ -48,6 +48,7 @@ export async function sendLeaderWelcomeEmail(
     to: leaderEmail,
     subject: template.subject,
     text: template.text,
+    html: template.html,
   });
 
   await logEmailEvent({
@@ -87,6 +88,7 @@ export async function sendParticipantInviteEmail(
     to: participantEmail,
     subject: template.subject,
     text: template.text,
+    html: template.html,
   });
 
   await logEmailEvent({
@@ -127,6 +129,7 @@ export async function sendParticipantResendEmail(
     to: participantEmail,
     subject: template.subject,
     text: template.text,
+    html: template.html,
   });
 
   await logEmailEvent({
@@ -166,6 +169,7 @@ export async function sendPersonalResultsEmail(
     to: participantEmail,
     subject: template.subject,
     text: template.text,
+    html: template.html,
   });
 
   await logEmailEvent({
@@ -205,6 +209,7 @@ export async function sendReportReadyEmail(
     to: leaderEmail,
     subject: template.subject,
     text: template.text,
+    html: template.html,
   });
 
   await logEmailEvent({

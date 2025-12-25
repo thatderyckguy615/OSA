@@ -14,6 +14,7 @@ export interface SendEmailParams {
   to: string;
   subject: string;
   text: string;
+  html?: string;
 }
 
 /**
@@ -56,12 +57,19 @@ export async function sendEmailWithRetry(params: SendEmailParams): Promise<SendE
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const result = await resend.emails.send({
+      const emailPayload: any = {
         from,
         to: params.to,
         subject: params.subject,
         text: params.text,
-      });
+      };
+
+      // Add HTML if provided
+      if (params.html) {
+        emailPayload.html = params.html;
+      }
+
+      const result = await resend.emails.send(emailPayload);
 
       // Resend returns { data, error } structure
       if (result.error) {
