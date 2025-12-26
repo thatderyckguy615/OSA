@@ -91,7 +91,7 @@ export function AssessmentComplete({
             {/* Info box */}
             <div className="bg-secondary border border-border rounded-lg p-4">
               <p className="text-sm text-muted-foreground">
-                Only your dimension scores and team averages will be visible in the leader's dashboard.
+              🔎 Only your dimension scores and team averages will be visible in the leader's dashboard.
               </p>
             </div>
           </CardContent>

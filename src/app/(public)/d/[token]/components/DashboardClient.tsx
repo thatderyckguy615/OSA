@@ -118,6 +118,7 @@ export function DashboardClient({
           completedCount={completedCount}
           totalMembers={totalMembers}
           completionPercent={completionPercent}
+          firmName={firmName}
         />
 
         <MemberLists

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Dashboard Header with Firm Name
+ * Dashboard Header with Operating Strengths Dashboard title
  */
 
 interface DashboardHeaderProps {
@@ -14,8 +14,8 @@ export function DashboardHeader({ firmName }: DashboardHeaderProps) {
     <header className="bg-background border-b border-border sticky top-0 z-10">
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-center">
-          {/* Firm name - centered, same style as homepage H1 but not red */}
-          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">{firmName}</h1>
+          {/* Operating Strengths Dashboard - centered, red H1 like homepage */}
+          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">Operating Strengths Dashboard</h1>
         </div>
       </div>
     </header>
