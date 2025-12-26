@@ -48,7 +48,7 @@ export function AssessmentComplete({
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
-            Assessment Complete!
+            Assessment Complete
           </h1>
           <p className="text-lg text-muted-foreground">{firmName}</p>
         </div>
