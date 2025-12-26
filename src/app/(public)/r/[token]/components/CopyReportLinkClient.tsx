@@ -47,7 +47,7 @@ export function CopyReportLinkClient({ reportUrl }: CopyReportLinkClientProps) {
     <>
       <Button
         onClick={handleCopy}
-        className="bg-rose-500 hover:bg-rose-600 text-white"
+        className="bg-primary hover:bg-primary/80 text-white"
       >
         {copied ? (
           <>
@@ -97,10 +97,10 @@ export function CopyReportLinkClient({ reportUrl }: CopyReportLinkClientProps) {
               value={reportUrl}
               readOnly
               onClick={handleFallbackSelect}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50 select-all"
+              className="flex-1 px-3 py-2 border border-border rounded-md text-sm bg-secondary select-all"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-muted-foreground mt-2">
             Click the link above to select it, then press Ctrl+C (Windows) or Cmd+C (Mac)
             to copy.
           </p>

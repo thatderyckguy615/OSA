@@ -196,11 +196,11 @@ export default function CreateTeamPage() {
   // Show success card if assessment was created
   if (successData) {
     return (
-      <div className="min-h-screen bg-slate-50 py-12 px-4">
+      <div className="min-h-screen bg-secondary py-12 px-4">
         <div className="mx-auto max-w-2xl">
           {/* Hero Section */}
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
+            <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
               Operating Strengths Assessment
             </h1>
           </div>
@@ -219,7 +219,7 @@ export default function CreateTeamPage() {
             <CardContent className="space-y-4">
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full bg-rose-600 hover:bg-rose-700">
+              <Button asChild className="w-full">
                 <a href={successData.leaderAssessmentUrl}>Start Your Assessment</a>
               </Button>
             </CardFooter>
@@ -239,14 +239,14 @@ export default function CreateTeamPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4">
+    <div className="min-h-screen bg-secondary py-12 px-4">
       <div className="mx-auto max-w-2xl">
         {/* Hero Section */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
             Operating Strengths Assessment
           </h1>
-          <p className="mt-3 text-base text-slate-600 md:text-lg">
+          <p className="mt-3 text-base text-muted-foreground md:text-lg">
             Measure your firm&apos;s strength across three critical dimensions:<br />
             alignment, execution, and accountability.
           </p>
@@ -306,7 +306,7 @@ export default function CreateTeamPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="participant-emails">Participant Emails</Label>
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-muted-foreground">
                     {participantCount} valid participant{participantCount !== 1 ? "s" : ""} (Limit: 100)
                   </span>
                 </div>
@@ -317,7 +317,7 @@ export default function CreateTeamPage() {
                   onChange={(e) => setParticipantEmailsRaw(e.target.value)}
                   className="min-h-[120px] resize-y"
                 />
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground">
                   Bulk paste supported. You are automatically included.
                 </p>
               </div>
@@ -326,21 +326,21 @@ export default function CreateTeamPage() {
               {parsedEmails.length > 0 && (
                 <div className="space-y-2">
                   <Label>Verified Emails</Label>
-                  <div className="max-h-48 overflow-y-auto rounded-md border border-slate-200 bg-slate-50 p-3">
+                  <div className="max-h-48 overflow-y-auto rounded-md border border-border bg-secondary p-3">
                     <ul className="space-y-1">
                       {parsedEmails.map((parsed, idx) => (
                         <li
                           key={`${parsed.email}-${idx}`}
                           className={`flex items-center gap-2 text-sm ${
                             parsed.isDuplicate
-                              ? "text-slate-400 line-through"
+                              ? "text-muted-foreground line-through"
                               : parsed.isValid
-                              ? "text-slate-700"
+                              ? "text-foreground"
                               : "text-red-600"
                           }`}
                         >
                           {parsed.isDuplicate ? (
-                            <span className="text-slate-400">—</span>
+                            <span className="text-muted-foreground">—</span>
                           ) : parsed.isValid ? (
                             <Check className="h-4 w-4 text-green-600" weight="bold" />
                           ) : (
@@ -348,7 +348,7 @@ export default function CreateTeamPage() {
                           )}
                           <span className="break-all">{parsed.email}</span>
                           {parsed.isDuplicate && (
-                            <span className="text-xs text-slate-400">(duplicate)</span>
+                            <span className="text-xs text-muted-foreground">(duplicate)</span>
                           )}
                           {!parsed.isValid && !parsed.isDuplicate && (
                             <span className="text-xs text-red-500">(invalid)</span>
@@ -380,7 +380,7 @@ export default function CreateTeamPage() {
                     </p>
                   )}
                   {validationState.duplicateEmails.length > 0 && (
-                    <p className="text-slate-500">
+                    <p className="text-muted-foreground">
                       {validationState.duplicateEmails.length} duplicate
                       {validationState.duplicateEmails.length !== 1 ? "s" : ""} removed
                     </p>
@@ -402,7 +402,7 @@ export default function CreateTeamPage() {
                 <Button
                   type="submit"
                   disabled={!validationState.canSubmit || isSubmitting}
-                  className="bg-rose-600 hover:bg-rose-700"
+                  className=""
                 >
                   {isSubmitting ? "Creating..." : "Send Invites & Start Assessment"}
                 </Button>

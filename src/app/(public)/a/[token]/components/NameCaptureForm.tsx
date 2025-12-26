@@ -1,15 +1,21 @@
 "use client";
 
 /**
- * Name Capture Form
- * Per PRD Section 6.2.2
+ * Name Capture Form for participants
+ * Displays when a team member needs to enter their display name
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 interface NameCaptureFormProps {
   token: string;
@@ -24,73 +30,80 @@ export function NameCaptureForm({ token, isLeader }: NameCaptureFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-
-    const trimmed = displayName.trim();
-    if (trimmed.length < 2) {
-      setError("Name must be at least 2 characters");
+    
+    const trimmedName = displayName.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      setError("Please enter your name (at least 2 characters)");
+      return;
+    }
+    if (trimmedName.length > 100) {
+      setError("Name must be 100 characters or less");
       return;
     }
 
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const response = await fetch(`/api/assessment/${token}/name`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName: trimmed }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ displayName: trimmedName }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.error?.message || "Failed to save name");
-        setIsSubmitting(false);
+      if (!response.ok || !data.success) {
+        setError(data.error?.message || "Failed to save name. Please try again.");
         return;
       }
 
-      // Success - refresh page to show intro
+      // Refresh the page to proceed to the assessment intro
       router.refresh();
     } catch (err) {
-      console.error("Name save error:", err);
-      setError("Connection error. Please try again.");
+      console.error("Error submitting name:", err);
+      setError("Network error. Please try again.");
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Card className="border-gray-200 shadow-sm">
+    <Card className="border-border shadow-sm">
       <CardHeader>
-        <CardTitle>What is your name?</CardTitle>
-        <CardDescription>
-          Your leader will see your overall dimension scores and team averages,
-          not your individual answers.
+        <CardTitle className="text-2xl text-foreground">Welcome!</CardTitle>
+        <CardDescription className="text-base">
+          {isLeader
+            ? "Please confirm your name to continue with the assessment."
+            : "Please enter your name to begin the assessment."}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="displayName">Display Name</Label>
+            <Label htmlFor="display-name">Your Name</Label>
             <Input
-              id="displayName"
+              id="display-name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="e.g. Jane Doe"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               disabled={isSubmitting}
               autoFocus
-              required
-              minLength={2}
             />
           </div>
 
           {error && (
-            <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
-              {error}
-            </div>
+            <p className="text-sm text-destructive">{error}</p>
           )}
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            disabled={isSubmitting || displayName.trim().length < 2}
+            className="w-full"
+          >
             {isSubmitting ? "Saving..." : "Continue"}
           </Button>
         </form>

@@ -86,12 +86,12 @@ export default async function DashboardPage({ params }: PageProps) {
   // Invalid token
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-secondary">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Invalid Dashboard Link
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             This dashboard link is invalid or has expired. Please check your
             email for the correct link.
           </p>
@@ -107,7 +107,7 @@ export default async function DashboardPage({ params }: PageProps) {
   const dashboardUrl = `${appUrl}/d/${token}`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-secondary">
       <DashboardClient
         token={token}
         dashboardUrl={dashboardUrl}

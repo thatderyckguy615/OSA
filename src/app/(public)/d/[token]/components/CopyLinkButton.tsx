@@ -91,7 +91,7 @@ export function CopyLinkButton({ url, label }: CopyLinkButtonProps) {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full space-y-4">
             <h3 className="text-lg font-semibold">Copy Link</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Press Ctrl+C (or Cmd+C on Mac) to copy the link:
             </p>
             <input
@@ -99,7 +99,7 @@ export function CopyLinkButton({ url, label }: CopyLinkButtonProps) {
               type="text"
               value={url}
               readOnly
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+              className="w-full px-3 py-2 border border-border rounded-md text-sm"
               onClick={(e) => (e.target as HTMLInputElement).select()}
             />
             <div className="flex gap-3 justify-end">

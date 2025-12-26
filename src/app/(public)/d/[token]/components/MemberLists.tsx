@@ -40,7 +40,7 @@ export function MemberLists({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Completed List */}
-      <Card className="border-gray-200 shadow-sm">
+      <Card className="border-border shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export function MemberLists({
         </CardHeader>
         <CardContent className="pt-0">
           {completedMembers.length === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">
+            <p className="text-muted-foreground text-sm py-4 text-center">
               No completed assessments yet
             </p>
           ) : (
@@ -80,7 +80,7 @@ export function MemberLists({
       </Card>
 
       {/* Pending List */}
-      <Card className="border-gray-200 shadow-sm">
+      <Card className="border-border shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export function MemberLists({
         </CardHeader>
         <CardContent className="pt-0">
           {pendingMembers.length === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">
+            <p className="text-muted-foreground text-sm py-4 text-center">
               All members have completed!
             </p>
           ) : (
@@ -150,10 +150,10 @@ function CompletedMemberRow({ member }: { member: Member }) {
   return (
     <div className="flex items-center justify-between py-3">
       <div className="min-w-0 flex-1">
-        <p className="font-medium text-gray-900 truncate">{displayName}</p>
-        <p className="text-sm text-gray-500 truncate">{member.email}</p>
+        <p className="font-medium text-foreground truncate">{displayName}</p>
+        <p className="text-sm text-muted-foreground truncate">{member.email}</p>
       </div>
-      <div className="text-sm text-gray-500 whitespace-nowrap ml-4">
+      <div className="text-sm text-muted-foreground whitespace-nowrap ml-4">
         {formatDate(member.completed_at)}
       </div>
     </div>
@@ -234,14 +234,14 @@ function PendingMemberRow({
     <div className="py-3">
       <div className="flex items-center justify-between">
         <div className="min-w-0 flex-1">
-          <p className="font-medium text-gray-900 truncate">{member.email}</p>
+          <p className="font-medium text-foreground truncate">{member.email}</p>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={handleResend}
           disabled={isResending || resendStatus === "sent" || resendStatus === "throttled"}
-          className="ml-4 text-gray-600 hover:text-gray-900"
+          className="ml-4 text-muted-foreground hover:text-foreground"
         >
           {getButtonText()}
         </Button>

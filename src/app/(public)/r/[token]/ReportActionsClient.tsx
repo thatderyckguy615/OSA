@@ -66,9 +66,9 @@ export function ReportHeaderActions({ reportUrl }: ReportHeaderActionsProps) {
         {dashboardUrlFromSession ? (
           <a
             href={dashboardUrlFromSession}
-            className="group flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white border border-gray-200 group-hover:border-gray-300 shadow-sm transition-colors">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border group-hover:border-border shadow-sm transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -114,7 +114,7 @@ export function ReportHeaderActions({ reportUrl }: ReportHeaderActionsProps) {
             ) : (
               "Copy Report Link"
             )}
-          </Button>
+      </Button>
           <Button variant="outline" size="sm" onClick={handlePrint}>
             <svg
               className="mr-2 h-4 w-4"
@@ -130,8 +130,8 @@ export function ReportHeaderActions({ reportUrl }: ReportHeaderActionsProps) {
               />
             </svg>
             Print / Save PDF
-          </Button>
-        </div>
+      </Button>
+    </div>
       </div>
     </header>
   );

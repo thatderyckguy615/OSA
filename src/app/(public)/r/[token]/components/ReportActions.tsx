@@ -39,7 +39,7 @@ export function ReportActions({ reportUrl }: { reportUrl: string }) {
           <DialogHeader>
             <DialogTitle>Copy this link</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Your browser wouldn’t allow automatic copy. Click the field below, then press ⌘C (Mac) or Ctrl+C (Windows).
           </p>
           <Input readOnly value={reportUrl} onFocus={(e) => e.currentTarget.select()} />

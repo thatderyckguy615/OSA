@@ -43,17 +43,17 @@ export function AssessmentComplete({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-secondary py-8 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
             Assessment Complete!
           </h1>
-          <p className="text-lg text-gray-600">{firmName}</p>
+          <p className="text-lg text-muted-foreground">{firmName}</p>
         </div>
 
-        <Card className="border-gray-200 shadow-sm">
+        <Card className="border-border shadow-sm">
           <CardHeader>
             <CardTitle>Thank you, {displayName}!</CardTitle>
             <CardDescription>
@@ -65,11 +65,11 @@ export function AssessmentComplete({
             {/* Scores */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-6 bg-rose-500"></div>
-                <h3 className="text-lg font-bold text-slate-900 tracking-wide uppercase">
+                <div className="w-1.5 h-6 bg-primary"></div>
+                <h3 className="text-lg font-bold text-foreground tracking-wide uppercase">
                   Your Scores
                 </h3>
-                <span className="text-slate-400 text-sm font-medium ml-2">(1.0 - 10.0 scale. Higher scores reflect strength.)</span>
+                <span className="text-muted-foreground text-sm font-medium ml-2">(1.0 - 10.0 scale. Higher scores reflect strength.)</span>
               </div>
 
               <div className="space-y-3">
@@ -89,8 +89,8 @@ export function AssessmentComplete({
             </div>
 
             {/* Info box */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <p className="text-sm text-gray-700">
+            <div className="bg-secondary border border-border rounded-lg p-4">
+              <p className="text-sm text-muted-foreground">
                 Your leader can view your dimension scores and will generate a
                 team report once all participants have completed the assessment.
               </p>
@@ -104,9 +104,9 @@ export function AssessmentComplete({
 
 function ScoreRow({ label, score }: { label: string; score: string }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-gray-200 last:border-0">
-      <span className="font-medium text-gray-900">{label}:</span>
-      <span className="text-2xl font-bold text-gray-900">{score}</span>
+    <div className="flex items-center justify-between py-2 border-b border-border last:border-0">
+      <span className="font-medium text-foreground">{label}:</span>
+      <span className="text-2xl font-bold text-foreground">{score}</span>
     </div>
   );
 }

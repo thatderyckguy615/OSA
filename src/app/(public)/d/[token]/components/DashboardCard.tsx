@@ -73,7 +73,7 @@ export function DashboardCard({
   };
 
   return (
-    <Card className="border-gray-200 shadow-sm">
+    <Card className="border-border shadow-sm">
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
@@ -85,7 +85,7 @@ export function DashboardCard({
           <Button
             onClick={handleGenerateReport}
             disabled={!canGenerateReport || isGenerating}
-            className="bg-rose-500 hover:bg-rose-600 text-white gap-2 whitespace-nowrap"
+            className="gap-2 whitespace-nowrap"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -112,14 +112,14 @@ export function DashboardCard({
         {/* Progress Section */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Completion Progress</span>
-            <span className="text-gray-900 font-medium">
+            <span className="text-muted-foreground">Completion Progress</span>
+            <span className="text-foreground font-medium">
               {completedCount} of {totalMembers} completed ({completionPercent}%)
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div className="w-full bg-secondary rounded-full h-2.5">
             <div
-              className="bg-rose-500 h-2.5 rounded-full transition-all duration-500"
+              className="bg-primary h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${completionPercent}%` }}
             />
           </div>
@@ -140,7 +140,6 @@ export function DashboardCard({
                   }
                   window.open(reportUrl, "_blank");
                 }}
-                className="bg-rose-500 hover:bg-rose-600 text-white"
               >
                 Open Report
               </Button>

@@ -23,7 +23,7 @@ export function AssessmentIntro({ token, displayName, firmName }: AssessmentIntr
   };
 
   return (
-    <Card className="border-gray-200 shadow-sm">
+    <Card className="border-border shadow-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Welcome, {displayName}</CardTitle>
         <CardDescription className="text-base">
@@ -34,7 +34,7 @@ export function AssessmentIntro({ token, displayName, firmName }: AssessmentIntr
       <CardContent className="space-y-6">
         {/* Purpose */}
         <div className="space-y-2">
-          <p className="text-base text-gray-900">⏱️ Answer 36 questions/prompts.</p>
+          <p className="text-base text-foreground">⏱️ Answer 36 questions/prompts.</p>
         </div>
 
         {/* Privacy Statement - Exact PRD copy */}

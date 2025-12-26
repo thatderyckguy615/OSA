@@ -147,10 +147,10 @@ export default function AssessmentQuestionsPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-secondary">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto" />
-          <p className="mt-4 text-gray-600">Loading assessment...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto" />
+          <p className="mt-4 text-muted-foreground">Loading assessment...</p>
         </div>
       </div>
     );
@@ -159,12 +159,12 @@ export default function AssessmentQuestionsPage() {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-secondary p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Unable to Load Assessment
           </h1>
-          <p className="text-gray-600 mb-6">{error}</p>
+          <p className="text-muted-foreground mb-6">{error}</p>
           <Button onClick={() => router.push(`/a/${token}`)} variant="outline">
             Go Back
           </Button>
@@ -176,8 +176,8 @@ export default function AssessmentQuestionsPage() {
   // No questions or no current question
   if (!progress.currentQuestion) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-600">No questions available.</p>
+      <div className="min-h-screen flex items-center justify-center bg-secondary">
+        <p className="text-muted-foreground">No questions available.</p>
       </div>
     );
   }
@@ -186,20 +186,20 @@ export default function AssessmentQuestionsPage() {
     progress;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Progress Header */}
-      <header className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 z-10">
+      <header className="sticky top-0 bg-background border-b border-border px-4 py-3 z-10">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-foreground">
               Question {currentIndex + 1} of {totalQuestions}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               {progress.answeredCount} answered
             </span>
           </div>
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-secondary rounded-full h-2">
             <div
               className="bg-green-600 h-2 rounded-full transition-all duration-300"
               style={{
@@ -214,7 +214,7 @@ export default function AssessmentQuestionsPage() {
       <main className="flex-1 flex flex-col px-4 py-6 max-w-2xl mx-auto w-full overflow-y-auto">
         {/* Question Text */}
         <div className="flex-shrink-0 mb-8">
-          <h2 className="text-xl md:text-2xl font-medium text-gray-900 leading-relaxed">
+          <h2 className="text-xl md:text-2xl font-medium text-foreground leading-relaxed">
             {currentQuestion.text}
           </h2>
         </div>
@@ -245,7 +245,7 @@ export default function AssessmentQuestionsPage() {
                     ${
                       isSelected
                         ? "border-green-500 bg-green-50"
-                        : "border-gray-300 bg-white hover:border-gray-400 active:bg-gray-50"
+                        : "border-border bg-background hover:border-border active:bg-secondary"
                     }
                   `}
                 >
@@ -255,16 +255,16 @@ export default function AssessmentQuestionsPage() {
                       className={`
                         w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center flex-shrink-0
                         transition-colors duration-150
-                        ${isSelected ? "border-green-500 bg-green-500" : "border-gray-400"}
+                        ${isSelected ? "border-green-500 bg-green-500" : "border-border"}
                       `}
                     >
                       {isSelected && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-background" />
                       )}
                     </div>
                     {/* Label */}
                     <span
-                      className={`text-base ${isSelected ? "font-medium text-gray-900" : "text-gray-700"}`}
+                      className={`text-base ${isSelected ? "font-medium text-foreground" : "text-foreground"}`}
                     >
                       {option.label}
                     </span>
@@ -284,7 +284,7 @@ export default function AssessmentQuestionsPage() {
       </main>
 
       {/* Navigation Footer */}
-      <footer className="sticky bottom-0 bg-white border-t border-gray-200 px-4 py-4">
+      <footer className="sticky bottom-0 bg-background border-t border-border px-4 py-4">
         <div className="max-w-2xl mx-auto flex gap-3">
           {/* Previous Button */}
           <Button

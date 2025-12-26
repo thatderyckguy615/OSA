@@ -72,12 +72,12 @@ export default async function AssessmentIntroPage({ params }: PageProps) {
   // Invalid token
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-secondary">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Invalid Assessment Link
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             This assessment link is invalid or has expired. Please check your
             email for the correct link or contact your team leader.
           </p>
@@ -105,11 +105,11 @@ export default async function AssessmentIntroPage({ params }: PageProps) {
   const skipNameCapture = data.isLeader && data.displayName;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-secondary py-8 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-rose-600 md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
             Operating Strengths Assessment
           </h1>
         </div>

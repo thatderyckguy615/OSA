@@ -120,14 +120,14 @@ export function AddMemberForm({ token, onSuccess }: AddMemberFormProps) {
             {/* Error message */}
             {error && (
               <div className="rounded-md bg-red-50 border border-red-200 p-3">
-                <p className="text-sm text-red-800">{error}</p>
+                <p className="text-sm text-destructive">{error}</p>
               </div>
             )}
 
             {/* Success message */}
             {success && (
               <div className="rounded-md bg-green-50 border border-green-200 p-3">
-                <p className="text-sm text-green-800">
+                <p className="text-sm text-green-600">
                   ✓ Member added successfully! They&apos;ll receive an email shortly.
                 </p>
               </div>
