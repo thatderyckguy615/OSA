@@ -247,8 +247,8 @@ export default function CreateTeamPage() {
             Operating Strengths Assessment
           </h1>
           <p className="mt-3 text-base text-muted-foreground md:text-lg">
-            Measure your firm&apos;s strength across three critical dimensions:<br />
-            alignment, execution, and accountability.
+            Measure your firm&apos;s strength in three critical dimensions:<br />
+            Alignment, Execution, and Accountability.
           </p>
         </div>
 
@@ -270,7 +270,7 @@ export default function CreateTeamPage() {
                   <Input
                     id="leader-name"
                     type="text"
-                    placeholder="e.g. Jane Doe"
+                    placeholder="e.g. Jack Henderson"
                     value={leaderName}
                     onChange={(e) => setLeaderName(e.target.value)}
                     aria-invalid={leaderName.length > 0 && !validationState.leaderNameValid}
@@ -281,7 +281,7 @@ export default function CreateTeamPage() {
                   <Input
                     id="leader-email"
                     type="email"
-                    placeholder="jane@example.com"
+                    placeholder="jack@firm.com"
                     value={leaderEmail}
                     onChange={(e) => setLeaderEmail(e.target.value)}
                     aria-invalid={leaderEmail.length > 0 && !validationState.leaderEmailValid}
@@ -295,7 +295,7 @@ export default function CreateTeamPage() {
                 <Input
                   id="firm-name"
                   type="text"
-                  placeholder="e.g. Acme Accounting LLP"
+                  placeholder="Caldwell Henderson & Associates, LLP"
                   value={firmName}
                   onChange={(e) => setFirmName(e.target.value)}
                   aria-invalid={firmName.length > 0 && !validationState.firmNameValid}
