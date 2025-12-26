@@ -295,7 +295,7 @@ export default function CreateTeamPage() {
                 <Input
                   id="firm-name"
                   type="text"
-                  placeholder="Caldwell Henderson & Associates, LLP"
+                  placeholder="e.g. Caldwell Henderson & Co."
                   value={firmName}
                   onChange={(e) => setFirmName(e.target.value)}
                   aria-invalid={firmName.length > 0 && !validationState.firmNameValid}
