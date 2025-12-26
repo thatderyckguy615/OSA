@@ -91,8 +91,7 @@ export function AssessmentComplete({
             {/* Info box */}
             <div className="bg-secondary border border-border rounded-lg p-4">
               <p className="text-sm text-muted-foreground">
-                Your leader can view your dimension scores and will generate a
-                team report once all participants have completed the assessment.
+                Only your dimension scores and team averages will be visible in the leader's dashboard.
               </p>
             </div>
           </CardContent>
