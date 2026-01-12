@@ -1,0 +1,9 @@
+# Query: Assessment Complete!
+# ContextLines: 1
+
+1 result - 1 file
+
+src/app/(public)/a/[token]/components/AssessmentComplete.tsx:
+  50            <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
+  51:             Assessment Complete
+  52            </h1>
