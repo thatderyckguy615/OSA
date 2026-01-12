@@ -426,18 +426,18 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             {/* Subtle background glow effect */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-primary/20 blur-xl"></div>
             
-            <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">WHAT TO DO WITH THESE RESULTS</h2>
+            <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">HOW TO INTERPRET OR IMPROVE THESE RESULTS</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto leading-relaxed">
-              For help interpreting or improving these results, visit the FREE guide:
+              Schedule a free diagnostic consultation with an expert.
             </p>
-            
+
             <a
-              href="https://addictiveleadership.com"
+              href="https://addictiveleadership.com/contact/"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
             >
-              <span>Visit Addictive Leadership</span>
+              <span>Book Our Consultation</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                 <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
                 <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />

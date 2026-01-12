@@ -247,8 +247,7 @@ export default function CreateTeamPage() {
             Operating Strengths Assessment
           </h1>
           <p className="mt-3 text-base text-muted-foreground md:text-lg">
-            Measure your firm&apos;s strength in three critical dimensions:<br />
-            Alignment, Execution, and Accountability.
+            Measure your firm&apos;s ability to turn strategy, people, and skills into <em>results</em>.
           </p>
         </div>
 
@@ -398,7 +397,7 @@ export default function CreateTeamPage() {
               )}
 
               {/* Submit Button */}
-              <div className="flex w-full justify-end">
+              <div className="flex w-full justify-center">
                 <Button
                   type="submit"
                   disabled={!validationState.canSubmit || isSubmitting}
