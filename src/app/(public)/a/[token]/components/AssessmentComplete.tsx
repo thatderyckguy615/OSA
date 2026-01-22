@@ -47,7 +47,7 @@ export function AssessmentComplete({
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
             Assessment Complete
           </h1>
           <p className="text-lg text-muted-foreground">{firmName}</p>

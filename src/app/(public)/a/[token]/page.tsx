@@ -109,7 +109,7 @@ export default async function AssessmentIntroPage({ params }: PageProps) {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
             Operating Strengths Assessment
           </h1>
         </div>

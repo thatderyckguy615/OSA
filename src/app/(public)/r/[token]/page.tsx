@@ -109,56 +109,61 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
       <style>{`
         @media print {
           .no-print { display: none !important; }
-          * { 
-            -webkit-print-color-adjust: exact !important; 
+          * {
+            -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
           }
-          body { 
-            -webkit-print-color-adjust: exact; 
-            print-color-adjust: exact; 
+          body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
-          
-          /* Explicitly force white text in navy section */
-          .bg-slate-900,
-          .bg-slate-900 h2,
-          .bg-slate-900 p,
-          .bg-slate-900 a {
+
+          /* Force white text in navy sections */
+          .bg-navy,
+          .bg-navy h2,
+          .bg-navy p,
+          .bg-navy a {
             color: white !important;
           }
-          
-          /* Force white text on rose button */
+
+          /* Force white text on coral button */
           .bg-primary,
           .bg-primary span,
           .bg-primary svg {
             color: white !important;
           }
-          
-          /* Ensure slate-300 text renders as light gray */
+
+          /* Ensure muted text renders correctly */
           .text-muted-foreground {
-            color: #cbd5e1 !important;
+            color: #6B6B6D !important;
           }
-          
-          /* Force white text in "For help interpreting..." section */
+
+          /* Force white text */
           .text-white {
             color: white !important;
           }
-          
-          /* Ensure slate-900 bars render correctly */
-          .bg-slate-900 {
-            background-color: #0f172a !important;
+
+          /* Ensure navy renders correctly */
+          .bg-navy {
+            background-color: #002253 !important;
           }
-          
-          /* Ensure h1 primary color renders correctly */
+
+          /* Ensure coral renders correctly */
+          .bg-primary,
           .text-primary {
-            color: oklch(0.577 0.245 27.325) !important;
+            color: #FF5252 !important;
           }
-          
-          /* Ensure foreground text renders consistently */
+          .bg-primary {
+            background-color: #FF5252 !important;
+            color: white !important;
+          }
+
+          /* Ensure charcoal text renders correctly */
           .text-foreground {
-            color: oklch(0.141 0.005 285.823) !important;
+            color: #1C1C1E !important;
           }
-          
+
           .print-break-inside-avoid { break-inside: avoid; }
         }
       `}</style>
@@ -173,7 +178,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
         <div className="border-b border-border pb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-extrabold text-primary md:text-4xl tracking-tight">Operating Strengths Report</h1>
+              <h1 className="text-3xl font-extrabold text-foreground md:text-4xl tracking-tight">Operating Strengths Report</h1>
               <p className="text-xl text-foreground mt-2 font-medium">{firmName}</p>
               
               <div className="flex gap-12 mt-6">
@@ -221,7 +226,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
                       
                       {/* Bar */}
                       <div 
-                        className="h-full bg-slate-900 relative z-10 transition-all duration-500"
+                        className="h-full bg-navy relative z-10 transition-all duration-500"
                         style={{ width: `${pct}%` }}
                       ></div>
                     </div>
@@ -422,10 +427,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
         {/* WHAT TO DO CARD */}
         <section className="print-break-inside-avoid">
-          <div className="bg-slate-900 rounded-2xl p-12 text-center shadow-lg relative overflow-hidden">
-            {/* Subtle background glow effect */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-primary/20 blur-xl"></div>
-            
+          <div className="bg-navy rounded-2xl p-12 text-center shadow-lg relative overflow-hidden">
             <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">HOW TO INTERPRET OR IMPROVE THESE RESULTS</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto leading-relaxed">
               Schedule a free diagnostic consultation with an expert.
@@ -449,7 +451,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
         {/* Logo at bottom */}
         <div className="mt-12 pb-6 text-center">
           <img 
-            src="/addictive-leadership-logo.png" 
+            src="/2026 Logo - horizontal - black text - 2000w.svg" 
             alt="Addictive Leadership" 
             className="mx-auto max-w-[150px] w-full h-auto"
           />

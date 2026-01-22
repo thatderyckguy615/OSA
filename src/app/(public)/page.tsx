@@ -200,7 +200,7 @@ export default function CreateTeamPage() {
         <div className="mx-auto max-w-2xl">
           {/* Hero Section */}
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
+            <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
               Operating Strengths Assessment
             </h1>
           </div>
@@ -228,7 +228,7 @@ export default function CreateTeamPage() {
           {/* Logo at bottom */}
           <div className="mt-12 text-center">
             <img 
-              src="/addictive-leadership-logo.png" 
+              src="/2026 Logo - horizontal - black text - 2000w.svg" 
               alt="Addictive Leadership" 
               className="mx-auto max-w-[150px] w-full h-auto"
             />
@@ -243,7 +243,7 @@ export default function CreateTeamPage() {
       <div className="mx-auto max-w-2xl">
         {/* Hero Section */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">
+          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
             Operating Strengths Assessment
           </h1>
           <p className="mt-3 text-base text-muted-foreground md:text-lg">
@@ -413,7 +413,7 @@ export default function CreateTeamPage() {
         {/* Logo at bottom */}
         <div className="mt-12 text-center">
           <img 
-            src="/addictive-leadership-logo.png" 
+            src="/2026 Logo - horizontal - black text - 2000w.svg" 
             alt="Addictive Leadership" 
             className="mx-auto max-w-[150px] w-full h-auto"
           />

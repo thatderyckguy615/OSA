@@ -132,7 +132,7 @@ export function DashboardClient({
         {/* Logo at bottom */}
         <div className="mt-12 pb-6 text-center">
           <img 
-            src="/addictive-leadership-logo.png" 
+            src="/2026 Logo - horizontal - black text - 2000w.svg" 
             alt="Addictive Leadership" 
             className="mx-auto max-w-[150px] w-full h-auto"
           />

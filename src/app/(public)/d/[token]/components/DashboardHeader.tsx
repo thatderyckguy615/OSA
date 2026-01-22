@@ -15,7 +15,7 @@ export function DashboardHeader({ firmName }: DashboardHeaderProps) {
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-center">
           {/* Operating Strengths Dashboard - centered, red H1 like homepage */}
-          <h1 className="text-3xl font-extrabold text-primary md:text-4xl">Operating Strengths Dashboard</h1>
+          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">Operating Strengths Dashboard</h1>
         </div>
       </div>
     </header>
