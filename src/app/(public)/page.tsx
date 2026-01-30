@@ -209,7 +209,7 @@ export default function CreateTeamPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-semibold">
-                ✅ Assessment Created!
+                Assessment Created!
               </CardTitle>
               <CardDescription>
                 You&apos;ve invited {successData.participantCount} team member
@@ -246,18 +246,12 @@ export default function CreateTeamPage() {
           <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
             Operating Strengths Assessment
           </h1>
-          <p className="mt-3 text-base text-muted-foreground md:text-lg">
-            Measure your firm&apos;s ability to turn strategy, people, and skills into <em>results</em>.
-          </p>
         </div>
 
         {/* Form Card */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Assessment Details</CardTitle>
-            <CardDescription>
-              Enter your details to generate the assessment links.
-            </CardDescription>
+            <CardTitle className="text-xl font-semibold text-center">Enter details to begin. Assessment links sent automatically.</CardTitle>
           </CardHeader>
 
           <form onSubmit={handleSubmit}>
@@ -265,7 +259,7 @@ export default function CreateTeamPage() {
               {/* Leader Name and Email */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="leader-name">Leader Name</Label>
+                  <Label htmlFor="leader-name">Your name:</Label>
                   <Input
                     id="leader-name"
                     type="text"
@@ -276,7 +270,7 @@ export default function CreateTeamPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="leader-email">Leader Email</Label>
+                  <Label htmlFor="leader-email">Your work email:</Label>
                   <Input
                     id="leader-email"
                     type="email"
@@ -290,7 +284,7 @@ export default function CreateTeamPage() {
 
               {/* Firm Name */}
               <div className="space-y-2">
-                <Label htmlFor="firm-name">Firm Name</Label>
+                <Label htmlFor="firm-name">Firm name:</Label>
                 <Input
                   id="firm-name"
                   type="text"
@@ -304,7 +298,7 @@ export default function CreateTeamPage() {
               {/* Participant Emails */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="participant-emails">Participant Emails</Label>
+                  <Label htmlFor="participant-emails">Participant emails:</Label>
                   <span className="text-sm text-muted-foreground">
                     {participantCount} valid participant{participantCount !== 1 ? "s" : ""} (Limit: 100)
                   </span>

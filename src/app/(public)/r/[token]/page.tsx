@@ -434,7 +434,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             </p>
 
             <a
-              href="https://addictiveleadership.com/contact/"
+              href="https://addictiveleadership.com/contact?interest=assessment"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"

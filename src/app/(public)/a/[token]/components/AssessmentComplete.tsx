@@ -4,7 +4,7 @@
  * Assessment Complete - Show Scores
  * Per PRD Section 6.2.3
  */
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AssessmentCompleteProps {
   firmName: string;
@@ -18,24 +18,12 @@ interface AssessmentCompleteProps {
 export function AssessmentComplete({
   firmName,
   displayName,
-  completedAt,
+  completedAt: _completedAt,
   alignmentScore,
   executionScore,
   accountabilityScore,
 }: AssessmentCompleteProps) {
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "recently";
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    } catch {
-      return "recently";
-    }
-  };
+  // _completedAt intentionally unused - kept for API compatibility
 
   const formatScore = (score: number | null): string => {
     if (score === null || score === undefined) return "—";
@@ -47,29 +35,24 @@ export function AssessmentComplete({
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
+          <h1 className="text-3xl font-extrabold md:text-4xl" style={{ color: "#1c1c1e" }}>
             Assessment Complete
           </h1>
-          <p className="text-lg text-muted-foreground">{firmName}</p>
+          <p className="text-lg" style={{ color: "#1c1c1e" }}>{firmName}</p>
         </div>
 
         <Card className="border-border shadow-sm">
           <CardHeader>
-            <CardTitle>Thank you, {displayName}!</CardTitle>
-            <CardDescription>
-              You completed this assessment on {formatDate(completedAt)}. Your
-              results have been recorded.
-            </CardDescription>
+            <CardTitle className="text-center" style={{ color: "#1c1c1e" }}>Thank you, {displayName}!</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Scores */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-6 bg-primary"></div>
-                <h3 className="text-lg font-bold text-foreground tracking-wide uppercase">
-                  Your Scores
+                <div className="w-1.5 h-6" style={{ backgroundColor: "#ff5252" }}></div>
+                <h3 className="text-lg font-bold tracking-wide uppercase" style={{ color: "#1c1c1e" }}>
+                  YOUR SCORES:
                 </h3>
-                <span className="text-muted-foreground text-sm font-medium ml-2">(1.0 - 10.0 scale. Higher scores reflect strength.)</span>
               </div>
 
               <div className="space-y-3">
@@ -89,9 +72,9 @@ export function AssessmentComplete({
             </div>
 
             {/* Info box */}
-            <div className="bg-secondary border border-border rounded-lg p-4">
-              <p className="text-sm text-muted-foreground">
-              🔎 Only your dimension scores and team averages will be visible in the leader's dashboard.
+            <div className="rounded-lg p-4" style={{ backgroundColor: "#E6EFF8" }}>
+              <p className="text-sm text-center" style={{ color: "#002253" }}>
+              🔎 1.0 - 10.0 scale. Higher scores reflect strength.
               </p>
             </div>
           </CardContent>
@@ -104,8 +87,8 @@ export function AssessmentComplete({
 function ScoreRow({ label, score }: { label: string; score: string }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-border last:border-0">
-      <span className="font-medium text-foreground">{label}:</span>
-      <span className="text-2xl font-bold text-foreground">{score}</span>
+      <span className="text-2xl font-bold" style={{ color: "#1c1c1e" }}>{label}</span>
+      <span className="text-2xl font-bold" style={{ color: "#1c1c1e" }}>{score}</span>
     </div>
   );
 }

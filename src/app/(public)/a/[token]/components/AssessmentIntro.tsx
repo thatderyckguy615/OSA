@@ -5,7 +5,7 @@
  * Per PRD Section 6.2.1
  */
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 interface AssessmentIntroProps {
@@ -24,27 +24,20 @@ export function AssessmentIntro({ token, displayName, firmName }: AssessmentIntr
 
   return (
     <Card className="border-border shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-2xl">Welcome, {displayName}</CardTitle>
-        <CardDescription className="text-base">
-          You're about to complete the Operating Strengths Assessment for{" "}
-          {firmName}. This will measure your team&apos;s collective strength across three dimensions: Alignment, Execution, and Accountability.
-        </CardDescription>
+      <CardHeader className="space-y-3">
+        <CardTitle className="text-2xl" style={{ color: "#1c1c1e" }}>Welcome, {displayName}</CardTitle>
+        <p className="text-base" style={{ color: "#1c1c1e" }}>
+          You&apos;re completing the Operating Strengths Assessment for {firmName}. It measures the firm&apos;s collective operating strengths across multiple dimensions.
+        </p>
+        <p className="text-base font-bold" style={{ color: "#1c1c1e" }}>
+          Answer 36 questions/prompts.
+        </p>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Purpose */}
-        <div className="space-y-2">
-          <p className="text-base text-foreground">⏱️ Answer 36 questions/prompts.</p>
-        </div>
-
-        {/* Privacy Statement - Exact PRD copy */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
-          <h3 className="font-semibold text-blue-900 flex items-center gap-2">
-            🔒 Your Privacy
-          </h3>
-          <p className="text-sm text-blue-800">
-            Your overall dimension scores and team averages will be visible to your leader, but NOT your answers to individual questions.
-            Please answer honestly.
+        {/* Privacy Statement */}
+        <div className="rounded-lg p-4" style={{ backgroundColor: "#E6EFF8" }}>
+          <p className="text-sm" style={{ color: "#002253" }}>
+            <strong>🔒 Privacy:</strong> Your individual responses stay confidential. Leadership sees collective patterns and aggregate scores only. Please answer honestly.
           </p>
         </div>
 

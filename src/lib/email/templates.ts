@@ -132,8 +132,8 @@ What to expect: Once your team completes their assessments, you'll see the colle
   ${createButton(assessmentLink, 'Take Assessment')}
 </div>
 
-<div style="margin: 24px 0; padding: 16px; background-color: #ffca5c; border-radius: 6px; border: 0px solid #bfdbfe;">
-  <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #1c1c1e;">
+<div style="margin: 24px 0; padding: 16px; background-color: #E6EFF8; border-radius: 6px;">
+  <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #002253;">
     <strong>What to expect:</strong> Once your team completes their assessments, you'll see the collective averages and each participant's dimension scores by name.
   </p>
 </div>
@@ -181,8 +181,8 @@ Privacy: Your individual answers stay confidential. Leadership sees firm-wide pa
 
 ${createButton(assessmentLink, 'Start Assessment')}
 
-<div style="margin: 24px 0; padding: 16px; background-color: #ffca5c; border-radius: 6px; border: 0px solid #bfdbfe;">
-  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #1c1c1e;">
+<div style="margin: 24px 0; padding: 16px; background-color: #E6EFF8; border-radius: 6px;">
+  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #002253;">
     <strong>🔒 Privacy:</strong> Your individual answers stay confidential. Leadership sees firm-wide patterns and aggregate scores, not who said what. Please answer honestly.
   </p>
 </div>
@@ -310,8 +310,8 @@ You can share this link—it's view-only and doesn't expose dashboard controls.
 
 ${createButton(reportLink, 'View Report')}
 
-<div style="margin: 24px 0; padding: 14px; background-color: #ffca5c; border-radius: 6px;">
-  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #1c1c1e;">
+<div style="margin: 24px 0; padding: 14px; background-color: #E6EFF8; border-radius: 6px;">
+  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #002253;">
     You can share this link—it's view-only and doesn't expose dashboard controls.
   </p>
 </div>
