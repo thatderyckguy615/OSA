@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import crypto from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hashToken, deriveRawToken } from "@/lib/tokens";
@@ -227,19 +228,23 @@ export async function POST(
       );
     }
 
-    // 5. Send participant_invite email asynchronously
+    // 5. Send participant_invite email using after() to ensure completion
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const assessmentLink = `${appUrl}/a/${assessmentRawToken}`;
 
-    void sendParticipantInviteEmail({
-      leaderName: team.leader_name,
-      firmName: team.firm_name,
-      assessmentLink,
-      participantEmail: email,
-      teamId,
-      teamMemberId: memberId,
-    }).catch((err) => {
-      console.error("Failed to send participant invite email:", err);
+    after(async () => {
+      try {
+        await sendParticipantInviteEmail({
+          leaderName: team.leader_name,
+          firmName: team.firm_name,
+          assessmentLink,
+          participantEmail: email,
+          teamId,
+          teamMemberId: memberId,
+        });
+      } catch (err) {
+        console.error("Failed to send participant invite email:", err);
+      }
     });
 
     // 6. Return success (Realtime will update the dashboard UI)

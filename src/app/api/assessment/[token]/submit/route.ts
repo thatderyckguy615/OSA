@@ -7,6 +7,7 @@
 export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { z } from "zod";
 
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -291,17 +292,21 @@ export async function POST(
       );
     }
 
-    // 9) Send personal results email (async, fire-and-forget)
-    void sendPersonalResultsEmail({
-      participantEmail: member.email,
-      teamId,
-      teamMemberId: member.id,
-      displayName: member.display_name || "Team Member",
-      alignment: scores.alignment.strength,
-      execution: scores.execution.strength,
-      accountability: scores.accountability.strength,
-    }).catch((err) => {
-      console.error("Failed to send personal results email:", err);
+    // 9) Send personal results email using after() to ensure completion
+    after(async () => {
+      try {
+        await sendPersonalResultsEmail({
+          participantEmail: member.email,
+          teamId,
+          teamMemberId: member.id,
+          displayName: member.display_name || "Team Member",
+          alignment: scores.alignment.strength,
+          execution: scores.execution.strength,
+          accountability: scores.accountability.strength,
+        });
+      } catch (err) {
+        console.error("Failed to send personal results email:", err);
+      }
     });
 
     // 10) Return success with leader-visible scores only (no subscales)

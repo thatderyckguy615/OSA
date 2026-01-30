@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hashToken, deriveRawToken } from "@/lib/tokens";
 import {
@@ -149,17 +150,20 @@ export async function POST(
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const assessmentLink = `${appUrl}/a/${assessmentRawToken}`;
 
-    // 5. Send participant_resend email asynchronously
-    // Don't await to avoid blocking the response
-    void sendParticipantResendEmail({
-      leaderName: team.leader_name,
-      firmName: team.firm_name,
-      assessmentLink,
-      participantEmail: member.email,
-      teamId,
-      teamMemberId: memberId,
-    }).catch((err) => {
-      console.error("Failed to send resend email:", err);
+    // 5. Send participant_resend email using after() to ensure completion
+    after(async () => {
+      try {
+        await sendParticipantResendEmail({
+          leaderName: team.leader_name,
+          firmName: team.firm_name,
+          assessmentLink,
+          participantEmail: member.email,
+          teamId,
+          teamMemberId: memberId,
+        });
+      } catch (err) {
+        console.error("Failed to send resend email:", err);
+      }
     });
 
     // 6. Return success

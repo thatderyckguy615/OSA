@@ -7,6 +7,7 @@
 export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import crypto from "node:crypto";
 import { z } from "zod";
 
@@ -317,32 +318,44 @@ export async function POST(request: NextRequest) {
 
     const participantCount = 1 + participantData.length;
 
-    // 12) Emails: fire-and-forget (never block response)
-    void sendLeaderWelcomeEmail({
-      leaderEmail: validated.leaderEmail,
-      teamId,
-      teamMemberId: leaderMemberId,
-      leaderName: validated.leaderName,
-      firmName: validated.firmName,
-      memberCount: participantCount,
-      dashboardLink: dashboardUrl,
-      assessmentLink: leaderAssessmentUrl,
-    }).catch((err) => console.error("Failed to send leader welcome email:", err));
+    // 12) Emails: use after() to ensure emails complete after response is sent
+    // This keeps the serverless function alive until all emails are sent
+    after(async () => {
+      try {
+        // Send leader welcome email
+        await sendLeaderWelcomeEmail({
+          leaderEmail: validated.leaderEmail,
+          teamId,
+          teamMemberId: leaderMemberId,
+          leaderName: validated.leaderName,
+          firmName: validated.firmName,
+          memberCount: participantCount,
+          dashboardLink: dashboardUrl,
+          assessmentLink: leaderAssessmentUrl,
+        });
+      } catch (err) {
+        console.error("Failed to send leader welcome email:", err);
+      }
 
-    for (const participant of participantData) {
-      const participantAssessmentUrl = `${appUrl}/a/${participant.assessmentRaw}`;
+      // Send participant invite emails in parallel
+      const participantEmailPromises = participantData.map(async (participant) => {
+        const participantAssessmentUrl = `${appUrl}/a/${participant.assessmentRaw}`;
+        try {
+          await sendParticipantInviteEmail({
+            participantEmail: participant.email,
+            teamId,
+            teamMemberId: participant.memberId,
+            leaderName: validated.leaderName,
+            firmName: validated.firmName,
+            assessmentLink: participantAssessmentUrl,
+          });
+        } catch (err) {
+          console.error(`Failed to send invite email to ${participant.email}:`, err);
+        }
+      });
 
-      void sendParticipantInviteEmail({
-        participantEmail: participant.email,
-        teamId,
-        teamMemberId: participant.memberId,
-        leaderName: validated.leaderName,
-        firmName: validated.firmName,
-        assessmentLink: participantAssessmentUrl,
-      }).catch((err) =>
-        console.error(`Failed to send invite email to ${participant.email}:`, err)
-      );
-    }
+      await Promise.all(participantEmailPromises);
+    });
 
     // 13) Success response
     return NextResponse.json<ApiResponse<CreateTeamResponse>>(

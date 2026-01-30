@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hashToken, deriveRawToken } from "@/lib/tokens";
 import { sendReportReadyEmail } from "@/lib/email";
@@ -292,17 +293,21 @@ export async function POST(
     const leaderMemberId = (leaderMemberResult.data as { id: string } | null)?.id;
 
     if (leaderMemberId) {
-      void sendReportReadyEmail({
-        leaderName: team.leader_name,
-        firmName: team.firm_name,
-        completionCount: validCompleted.length,
-        totalCount: totalCount ?? 0,
-        reportLink: reportUrl,
-        leaderEmail: team.leader_email,
-        teamId,
-        teamMemberId: leaderMemberId,
-      }).catch((err) => {
-        console.error("Failed to send report ready email:", err);
+      after(async () => {
+        try {
+          await sendReportReadyEmail({
+            leaderName: team.leader_name,
+            firmName: team.firm_name,
+            completionCount: validCompleted.length,
+            totalCount: totalCount ?? 0,
+            reportLink: reportUrl,
+            leaderEmail: team.leader_email,
+            teamId,
+            teamMemberId: leaderMemberId,
+          });
+        } catch (err) {
+          console.error("Failed to send report ready email:", err);
+        }
       });
     } else {
       console.warn("Leader team_member row not found; skipping report_ready email logging.");
