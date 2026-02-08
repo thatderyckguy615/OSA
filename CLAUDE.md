@@ -16,7 +16,24 @@ pnpm test         # Run Vitest in watch mode
 pnpm test:unit    # Run tests once
 pnpm preview:email # Preview email templates (tsx scripts/preview-email.ts)
 pnpm generate:types # Regenerate Supabase types from remote schema
+
+# Run a single test file
+pnpm vitest run tests/unit/scoring.test.ts
 ```
+
+### Utility Scripts
+
+- `scripts/preview-email.ts` - Preview email templates locally
+- `scripts/print-assessment-link.ts` - Generate assessment links for testing
+- `scripts/test-tokens.ts` - Test token derivation
+
+## Important Conventions
+
+- **Path alias**: `@/*` maps to `./src/*` (configured in tsconfig and vitest)
+- **Tests live in** `tests/unit/` (not co-located with source)
+- **React Compiler** is enabled (`reactCompiler: true` in next.config.ts)
+- **shadcn/ui** uses `radix-vega` style with Phosphor icons (`@phosphor-icons/react`)
+- **No middleware** — all auth is token-based via URL params, no session/cookie auth
 
 ## Architecture
 
