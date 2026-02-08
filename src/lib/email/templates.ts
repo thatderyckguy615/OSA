@@ -17,7 +17,7 @@ const LOGO_URL = "https://www.addictiveleadership.com";
 // Use the app-hosted logo (PNG for email client compatibility — most clients block SVG)
 const getLogoImageUrl = () => {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://addictiveleadership.com";
-  return `${baseUrl}/addictive-leadership-logo.png`;
+  return `${baseUrl}/2026%20Logo%20-%20horizontal%20-%20black%20text%20-%201000w.png`;
 };
 
 function buildHtmlWrapper(content: string): string {
