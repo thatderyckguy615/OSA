@@ -13,6 +13,7 @@ import { z } from "zod";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { deriveRawToken, hashToken } from "@/lib/tokens";
+import { syncContactOnTeamCreation } from "@/lib/hubspot";
 import { CreateTeamSchema } from "@/lib/validation/schemas";
 import { getClientIp } from "@/lib/utils/request";
 import { sendLeaderWelcomeEmail, sendParticipantInviteEmail } from "@/lib/email";
@@ -355,6 +356,17 @@ export async function POST(request: NextRequest) {
       });
 
       await Promise.all(participantEmailPromises);
+
+      // Sync leader to HubSpot
+      try {
+        await syncContactOnTeamCreation({
+          email: validated.leaderEmail,
+          firstName: validated.leaderName,
+          firmName: validated.firmName,
+        });
+      } catch (err) {
+        console.error("HubSpot sync failed on team creation:", err);
+      }
     });
 
     // 13) Success response

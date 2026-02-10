@@ -17,8 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: "Operating Strengths Assessment",
   description: "A Behavioral Diagnostic for Public Accounting Firms",
+  icons: {
+    icon: "/favicon.png",
+  },
+  openGraph: {
+    images: ["/AL 2026 opengraph image.png"],
+  },
 };
 
 export default function RootLayout({

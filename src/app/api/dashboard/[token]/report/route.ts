@@ -3,6 +3,7 @@ import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hashToken, deriveRawToken } from "@/lib/tokens";
 import { sendReportReadyEmail } from "@/lib/email";
+import { syncReportUrlToContact } from "@/lib/hubspot";
 
 export const runtime = "nodejs";
 
@@ -312,6 +313,18 @@ export async function POST(
     } else {
       console.warn("Leader team_member row not found; skipping report_ready email logging.");
     }
+
+    // Sync report URL to HubSpot
+    after(async () => {
+      try {
+        await syncReportUrlToContact({
+          email: team.leader_email,
+          reportUrl,
+        });
+      } catch (err) {
+        console.error("HubSpot sync failed on report generation:", err);
+      }
+    });
 
     // 12) Return reportUrl
     return NextResponse.json<ApiResponse<GenerateReportSuccessResponse>>(

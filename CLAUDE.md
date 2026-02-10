@@ -103,6 +103,7 @@ Required in `.env.local`:
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase public
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase admin operations
 - `RESEND_API_KEY` - Email sending
+- `HUBSPOT_ACCESS_TOKEN` - HubSpot Private App token for contact syncing (optional; sync skipped if not set)
 
 ## Key Patterns
 
